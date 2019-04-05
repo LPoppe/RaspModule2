@@ -1,11 +1,11 @@
 package deskfileclient;
 
 
-import framework.FileSenderThread;
-import framework.Packet;
+import framework.ConnectionManager;
+import framework.PacketBuilder;
 
+import java.io.IOException;
 import java.net.*;
-import java.util.Scanner;
 
 // TODO: You should be able to prove that the file you download from the server
 //  is exactly the same as the one on the server, and the other way around (data integrity).
@@ -18,38 +18,38 @@ public class FileClient {
             return;
         }
 
-        Scanner inputScanner = new Scanner(System.in);
         DatagramSocket socket = new DatagramSocket();
         String hostname = args[0];
 
-        int port = Integer.parseInt(args[1]);
-
-        // Thread is active while the user has not typed "quit".
-        boolean active = true;
-
-        while (active) {
-            String userInput = inputScanner.nextLine();
-
-            switch (userInput) {
-                case "quit":
-                    active = false;
-                    break;
-                case "send":
-                    // Allow the user to send a file to the server.
-                    //new FileSenderThread("filename").start();
-                    break;
-                case "get":
-                    //Handle request to receive file from server.
-                    break;
-            }
-        }
-
+        int hostPort = Integer.parseInt(args[1]);
 
 
         try {
             InetAddress hostAddress = InetAddress.getByName(hostname);
+
+            while (true) {
+//                // Sending...
+                byte[] abytearray = new byte[1];
+                String destfilename = null;
+                PacketBuilder nextPacket = new PacketBuilder(abytearray, hostAddress, hostPort, destfilename);
+                DatagramPacket nextToSend = nextPacket.createPacket();
+                socket.send(nextToSend);
+
+                // Receiving...
+                byte[] buffer = new byte[400];
+                DatagramPacket response = new DatagramPacket(buffer, buffer.length);
+                socket.receive(response);
+
+                Thread.sleep(10000);
+            }
         } catch (UnknownHostException e) {
             System.err.println("Host unknown: " + e.getMessage());
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            System.err.println("Thread interrupted: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Error at client: " + e.getMessage());
             e.printStackTrace();
         }
     }

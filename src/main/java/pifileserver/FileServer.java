@@ -3,7 +3,7 @@ package pifileserver;
 // The server should be able to transfer several files at the same time.
 // Under what circumstances can this improve or deteriorate the total transfer speed / quality?
 
-import framework.FileSenderThread;
+import framework.ConnectionManager;
 
 import java.io.IOException;
 
@@ -13,6 +13,6 @@ public class FileServer {
 
     public static void main(String[] args) throws IOException {
         //If a file is requested, start a thread to send it.
-        new FileSenderThread("filename").start();
+        new ConnectionManager().start();
     }
 }

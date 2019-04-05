@@ -1,6 +1,45 @@
 package deskfileclient;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 public class ClientController {
+
+    public ClientController() {
+//        try (Scanner in = new Scanner(System.in)) {
+//
+//        } catch (IOException e) {
+//
+//        }
+        Scanner inputScanner = new Scanner(System.in);
+            String userInput = inputScanner.nextLine();
+            boolean active = true;
+
+//            ClientCommand command = ClientCommand.getCommand(userInput);
+//            command.execute();
+
+            switch (userInput) {
+                case "quit":
+                    active = false;
+                    break;
+                case "send":
+                    // Allow the user to send a file to the server.
+                    //new FileSenderThread("filename").start();
+                    break;
+                case "get":
+                    //Handle request to receive file from server.
+                    break;
+                case "list":
+                    listFileNames();
+                    break;
+                case "pause":
+                    //upload or download?
+                    break;
+                case "resume":
+                    //upload or download?
+                    break;
+            }
+        }
 
     //TODO: You should be able to pause and resume downloads at any time. Add cancel?
     /** Controlling the download of a specific file **/
