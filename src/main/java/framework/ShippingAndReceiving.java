@@ -3,6 +3,7 @@ package framework;
 import java.io.IOException;
 import java.net.*;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ShippingAndReceiving extends Thread {
     private static final int TIMEOUT = 50;
@@ -14,6 +15,9 @@ public class ShippingAndReceiving extends Thread {
 
     private InetAddress destAddress;
     private int destPort;
+
+    // For server, map clients that have sent SYN, so we know who is allowed to send other requests.
+    private HashMap<InetAddress, Integer> knownClients;
 
     /**
      * File sender thread that can be used by the client and server to send files.
@@ -29,29 +33,40 @@ public class ShippingAndReceiving extends Thread {
     }
 
     public void run() {
+        // TODO: Add a time-out to the connection.
+        // TODO: Allow reconnecting, if we manage.
 
-        // Start the connection.
-        establishConnection();
+        if (!isServer) {
+            // Start a specific connection if client.
+            establishConnection();
+        }
 
-        //Continue until timeout or FIN.
+        // Continue until timeout or FIN.
         while (!reachedTimeOut && !receivedFIN) {
             try {
                 socket.setSoTimeout(TIMEOUT);
                 // First check receiving.
-                byte[] receiveBuffer = new byte[500];
-                DatagramPacket request = new DatagramPacket(receiveBuffer, receiveBuffer.length);
-                socket.receive(request);
+                try {
+                    // Receive buffer set to the maximum size a packet may have.
+                    byte[] receiveBuffer = new byte[RaspDatagram.MAX_PACKET_SIZE];
+                    DatagramPacket request = new DatagramPacket(receiveBuffer, receiveBuffer.length);
+                    socket.receive(request);
 
-                // Deal with received message.
-                if (request.getData() != null) {
-                    seqNr++;
-                    System.out.println("Received: " + Arrays.toString(request.getData()));
+                    // Deal with received message if the checksum and sequence number are correct, otherwise discard.
+                    if (request.getData() != null && packetOK(request)) {
+                        // e.g. ControlFlag.ACK.respondToFlag(isServer);
+                        System.out.println("Received: " + Arrays.toString(request.getData()));
+                    }
+                } catch (SocketTimeoutException e){
+                    // TODO: If I could use a non-blocking channel or something, that might be nicer.
+                    //  But this'll do for now.
                 }
 
-                byte[] data = new byte[1];
-                data[0] = 101;
                 // Then send, if necessary.
-                DatagramPacket nextPacket = RaspDatagram.createPacket(data, destAddress, destPort, seqNr, ContentFlag.DATA);
+                byte[] data = new byte[1];
+                data[0] = (byte) 101;
+                DatagramPacket nextPacket = RaspDatagram.createPacket(data, destAddress, destPort, seqNr, ControlFlag.DATA);
+                System.out.println("Sending: " + Arrays.toString(nextPacket.getData()) + " to " + nextPacket.getAddress() + " on port " + nextPacket.getPort());
                 socket.send(nextPacket);
 
             } catch (UnknownHostException e) {
@@ -68,6 +83,7 @@ public class ShippingAndReceiving extends Thread {
     }
 
     private void establishConnection() {
+        // TODO: socket.getReceiveBufferSize can be used to determine possible packet size.
         System.out.println("Waiting to establish connection");
         try {
             if (!isServer) {
@@ -78,19 +94,20 @@ public class ShippingAndReceiving extends Thread {
                         socket.setBroadcast(true);
                         String broadcastMessage = "HELLO";
                         byte[] broadcastBuffer = broadcastMessage.getBytes();
-                        System.out.println(Arrays.toString(broadcastBuffer));
-                        DatagramPacket hello = new DatagramPacket(broadcastBuffer, broadcastBuffer.length, InetAddress.getLocalHost(), 8001);
-                        //DatagramPacket hello = RaspDatagram.createPacket(broadcastBuffer, InetAddress.getByName("255.255.255.255"), 8001, seqNr, ContentFlag.SYN);
+                        DatagramPacket hello = RaspDatagram.createPacket(broadcastBuffer, InetAddress.getLocalHost(), 8001, seqNr, ControlFlag.SYN);
                         socket.send(hello);
 
                         byte[] receiveBuffer = new byte[500];
                         DatagramPacket response = new DatagramPacket(receiveBuffer, receiveBuffer.length);
 
                         socket.setSoTimeout(1000);
-                        socket.receive(response);
                         // If no response, a SocketTimeoutException is caught.
+                        socket.receive(response);
+
                         destAddress = response.getAddress();
                         destPort = response.getPort();
+                        System.out.println("Found connection.");
+                        // Ignore packets from other sources.
                         socket.connect(destAddress, destPort);
                         socket.setBroadcast(false);
                         break;
@@ -98,28 +115,13 @@ public class ShippingAndReceiving extends Thread {
                         System.out.println("No response.");
                     }
                 }
+
                 // Check if properly connected. If it has timed out or otherwise failed, close.
                 if (!socket.isConnected()) {
                     socket.close();
                     reachedTimeOut = true;
                 }
-
-            } else {
-                // The server listens for an incoming requests and acknowledges it. Does not use a time-out.
-                // TODO: in this set-up, server only allows one connection.
-                byte[] receiveBuffer = new byte[500];
-                DatagramPacket request = new DatagramPacket(receiveBuffer, receiveBuffer.length);
-                socket.receive(request);
-                socket.connect(request.getAddress(), request.getPort());
-
-                System.out.println("Found connection.");
-                String broadcastResponse = "HELLO";
-                byte[] responseBuffer = broadcastResponse.getBytes();
-                seqNr++;
-                DatagramPacket hello = RaspDatagram.createPacket(responseBuffer, socket.getInetAddress(), socket.getPort(), seqNr, ContentFlag.ACK);
-                socket.send(hello);
-
-                }
+            }
         } catch (UnknownHostException ex) {
             System.err.println("Host unknown: " + ex.getMessage());
             ex.printStackTrace();
@@ -131,6 +133,12 @@ public class ShippingAndReceiving extends Thread {
         }
     }
 
-    //TODO: Allow reconnecting, if we manage.
+    /** Determine if received packet contains the correct checksum, sequence number, and ack number.
+     *  And if server, if the client is already properly connected (if it is in the HashMap of known clients).
+     *  @return true if values match expected.
+     */
+    private static boolean packetOK(DatagramPacket packet) {
+        return true;
+    }
 
 }
