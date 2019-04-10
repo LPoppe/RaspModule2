@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class FileTransfer {
+public class FileUpload {
     private int fileSize;
     private int dataSent;
     private int dataLeft;
@@ -18,7 +18,7 @@ public class FileTransfer {
     // Is this a good idea?
     private int expectedFinish;
 
-    public FileTransfer(int timeAtStart) {
+    public FileUpload(int timeAtStart) {
         this.isPaused = false;
         this.isDone = false;
     }

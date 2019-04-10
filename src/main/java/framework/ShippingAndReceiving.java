@@ -4,20 +4,27 @@ import java.io.IOException;
 import java.net.*;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ShippingAndReceiving extends Thread {
     private static final int TIMEOUT = 50;
     private DatagramSocket socket;
     private int seqNr = 0;
+    private int ackNr = 0;
+
     private boolean isServer;
     private boolean reachedTimeOut = false;
     private boolean receivedFIN = false;
 
+    // The client connects to a single server and ignores all other messages.
     private InetAddress destAddress;
     private int destPort;
 
     // For server, map clients that have sent SYN, so we know who is allowed to send other requests.
-    private HashMap<InetAddress, Integer> knownClients;
+    private HashMap<InetAddress, Integer> knownClients = new HashMap<>();
+
+    private final LinkedBlockingQueue sendQueue;
+    private final LinkedBlockingQueue receiveQueue;
 
     /**
      * File sender thread that can be used by the client and server to send files.
@@ -30,6 +37,8 @@ public class ShippingAndReceiving extends Thread {
             System.err.println("Failed to open socket: " + e.getMessage());
             e.printStackTrace();
         }
+        sendQueue = new LinkedBlockingQueue();
+        receiveQueue = new LinkedBlockingQueue();
     }
 
     public void run() {
@@ -45,33 +54,12 @@ public class ShippingAndReceiving extends Thread {
         while (!reachedTimeOut && !receivedFIN) {
             try {
                 socket.setSoTimeout(TIMEOUT);
+
                 // First check receiving.
-                try {
-                    // Receive buffer set to the maximum size a packet may have.
-                    byte[] receiveBuffer = new byte[RaspDatagram.MAX_PACKET_SIZE];
-                    DatagramPacket request = new DatagramPacket(receiveBuffer, receiveBuffer.length);
-                    socket.receive(request);
-
-                    // Deal with received message if the checksum and sequence number are correct, otherwise discard.
-                    if (request.getData() != null && packetOK(request)) {
-                        // e.g. ControlFlag.ACK.respondToFlag(isServer);
-                        System.out.println("Received: " + Arrays.toString(request.getData()));
-                    }
-                } catch (SocketTimeoutException e){
-                    // TODO: If I could use a non-blocking channel or something, that might be nicer.
-                    //  But this'll do for now.
-                }
-
+                receive();
                 // Then send, if necessary.
-                byte[] data = new byte[1];
-                data[0] = (byte) 101;
-                DatagramPacket nextPacket = RaspDatagram.createPacket(data, destAddress, destPort, seqNr, ControlFlag.DATA);
-                System.out.println("Sending: " + Arrays.toString(nextPacket.getData()) + " to " + nextPacket.getAddress() + " on port " + nextPacket.getPort());
-                socket.send(nextPacket);
+                ship();
 
-            } catch (UnknownHostException e) {
-                System.err.println("Host unknown: " + e.getMessage());
-                e.printStackTrace();
             } catch (IOException e) {
                 System.err.println("I/O error: " + e.getMessage());
                 e.printStackTrace();
@@ -80,6 +68,41 @@ public class ShippingAndReceiving extends Thread {
 
         // Once finished, close the socket.
         socket.close();
+    }
+
+    private void receive() {
+        // Receive buffer set to the maximum size a packet may have.
+        byte[] receiveBuffer = new byte[RaspPacket.MAX_PACKET_SIZE];
+        DatagramPacket request = new DatagramPacket(receiveBuffer, receiveBuffer.length);
+        try {
+            socket.receive(request);
+        } catch (SocketTimeoutException e){
+            // TODO: If I could use a non-blocking channel or something, that might be nicer.
+        } catch (IOException e) {
+            System.err.println("I/O error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        // Deal with received message if the checksum and sequence number are correct, otherwise discard.
+        RaspPacket received = new RaspPacket(request);
+        if (request.getData() != null && packetOK(received)) {
+            received.getHeader().getFlag().respondToFlag(isServer);
+            System.out.println("Received: " + Arrays.toString(request.getData()));
+        }
+    }
+
+    private void ship() {
+        byte[] data = new byte[1];
+        data[0] = (byte) 101;
+        RaspPacket nextPacket = new RaspPacket(data, destAddress, destPort, seqNr, ackNr, ControlFlag.DATA);
+        DatagramPacket fullPacket = nextPacket.createPacket();
+        try {
+            socket.send(fullPacket);
+        } catch (IOException e) {
+            System.err.println("I/O error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     private void establishConnection() {
@@ -94,7 +117,8 @@ public class ShippingAndReceiving extends Thread {
                         socket.setBroadcast(true);
                         String broadcastMessage = "HELLO";
                         byte[] broadcastBuffer = broadcastMessage.getBytes();
-                        DatagramPacket hello = RaspDatagram.createPacket(broadcastBuffer, InetAddress.getLocalHost(), 8001, seqNr, ControlFlag.SYN);
+                        RaspPacket packet = new RaspPacket(broadcastBuffer, InetAddress.getLocalHost(), 8001, seqNr, ackNr, ControlFlag.SYN);
+                        DatagramPacket hello = packet.createPacket();
                         socket.send(hello);
 
                         byte[] receiveBuffer = new byte[500];
@@ -137,8 +161,23 @@ public class ShippingAndReceiving extends Thread {
      *  And if server, if the client is already properly connected (if it is in the HashMap of known clients).
      *  @return true if values match expected.
      */
-    private static boolean packetOK(DatagramPacket packet) {
-        return true;
+    private boolean packetOK(RaspPacket packet) {
+        return RaspHeader.testChecksum(packet);
     }
 
+    public void setSeqNr(RaspPacket packet) {
+        this.seqNr = packet.getHeader().getAckNr();
+    }
+
+    public void setAckNr(RaspPacket packet) {
+        this.ackNr = packet.getHeader().getSeqNr() + 1;
+    }
+
+    public HashMap<InetAddress, Integer> getKnownClients() {
+        return knownClients;
+    }
+
+    public void addClient(InetAddress address, Integer port) {
+        this.knownClients.put(address, port);
+    }
 }
