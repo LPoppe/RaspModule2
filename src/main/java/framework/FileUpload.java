@@ -2,32 +2,33 @@ package framework;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.BufferedInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
 
 public class FileUpload {
-    private int fileSize;
-    private int dataSent;
-    private int dataLeft;
-
     private boolean isPaused;
     private boolean isDone;
+    private Integer fileIdentifier;
+    private int segmentCounter;
+    private TransferController transferControl;
 
-    private int startTime;
-    private int timeSpent;
-    // Is this a good idea?
-    private int expectedFinish;
+    private BufferedInputStream fileStream;
 
-    public FileUpload(int timeAtStart) {
+    public FileUpload(TransferController controller) {
         this.isPaused = false;
         this.isDone = false;
+        this.transferControl = controller;
+        this.fileIdentifier = getRandomNotInUse(1, 50000);
+        this.segmentCounter = 0;
     }
 
     public void updateTracker(int timeAtUpdate) {
 
     }
 
-    private byte[] getNextFileSegment(String fileName) {
+    public byte[] getNextFileSegment(String fileName) {
         byte[] nextSegment = null;
         try {
             nextSegment = Files.readAllBytes(Paths.get(fileName));
@@ -39,5 +40,31 @@ public class FileUpload {
             e.printStackTrace();
         }
         return nextSegment;
+    }
+
+    public int getFileIdentifier() {
+        return fileIdentifier;
+    }
+
+    public void setDone(boolean done) {
+        isDone = done;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+
+    private int getRandomNotInUse(int lower, int upper) {
+        if (lower >= upper) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+        int newIdentifier;
+        do {
+            Random rand = new Random();
+            newIdentifier = rand.nextInt((upper - lower) + 1) + lower;
+        } while (transferControl.getUploaders().containsValue(newIdentifier)
+                || transferControl.getDownloaders().containsValue(newIdentifier));
+
+        return newIdentifier;
     }
 }

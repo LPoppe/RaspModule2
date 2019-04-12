@@ -15,10 +15,8 @@ public class FileDownload {
 
     private int startTime;
     private int timeSpent;
-    // Is this a good idea?
-    private int expectedFinish;
 
-    public FileDownload(int timeAtStart) {
+    public FileDownload() {
         this.isPaused = false;
         this.isDone = false;
     }

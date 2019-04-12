@@ -15,7 +15,7 @@ public class ClientController {
             String userInput = inputScanner.nextLine();
             boolean active = true;
 
-//            ClientCommand command = ClientCommand.getCommand(userInput);
+//            AppCommand command = AppCommand.getCommand(userInput);
 //            command.execute();
 
             switch (userInput) {

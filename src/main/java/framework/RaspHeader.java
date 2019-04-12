@@ -57,13 +57,26 @@ public class RaspHeader {
         this.ackNr = bufferedHeader.getInt(HeaderField.ACK_NR.getFieldLoc());
         this.payloadLength = bufferedHeader.getInt(HeaderField.CON_LEN.getFieldLoc());
         this.flag = ControlFlag.fromInt(bufferedHeader.get(HeaderField.FLAG.getFieldLoc()));
+        this.checksum = new byte[HeaderField.CHECKSUM.getFieldLength()];
+        // Loop to get checksum values back into the header.
+        int location = HeaderField.CHECKSUM.getFieldLoc();
+        for ( int i = 0; i < HeaderField.CHECKSUM.getFieldLength(); i++) {
+            checksum[i] = bufferedHeader.get(location);
+            location++;
+        }
     }
 
     public byte[] getHeader() {
         ByteBuffer fieldBuf = ByteBuffer.allocate(getLength());
-        fieldBuf.put(this.checksum, HeaderField.CHECKSUM.getFieldLoc(), HeaderField.CHECKSUM.getFieldLength());
+        // Loop because you can't put arrays at a certain position in a byte buffer.
+        int i = HeaderField.CHECKSUM.getFieldLoc();
+        for (byte b : this.checksum) {
+            fieldBuf.put(i, b);
+            i++;
+        }
+
         fieldBuf.putInt(HeaderField.CON_LEN.getFieldLoc(), this.payloadLength);
-        fieldBuf.putInt(HeaderField.FLAG.getFieldLoc(), this.flag.getFlag());
+        fieldBuf.put(HeaderField.FLAG.getFieldLoc(), (byte) this.flag.getFlag());
         fieldBuf.putInt(HeaderField.ACK_NR.getFieldLoc(), this.ackNr);
         fieldBuf.putInt(HeaderField.SEQ_NR.getFieldLoc(), this.seqNr);
         return fieldBuf.array();
@@ -88,6 +101,9 @@ public class RaspHeader {
     public static boolean testChecksum(RaspPacket packet) {
         byte[] payload = packet.getPayload();
         byte[] expected = createChecksum(payload);
+        System.out.printf("Header contains: seq %s, ack %s, pl %s, flag %s, check %s \n",
+                packet.getHeader().seqNr, packet.getHeader().ackNr, packet.getHeader().payloadLength,
+                packet.getHeader().flag, Arrays.toString(packet.getHeader().checksum));
         return Arrays.equals(expected, packet.getHeader().checksum);
     }
 
@@ -97,11 +113,12 @@ public class RaspHeader {
         result[3] = (byte) checkValue;
         result[2] = (byte) (checkValue >>> 8);
         result[1] = (byte) (checkValue >>> 16);
-        result[0] = (byte) (checkValue >>> 32);
+        result[0] = (byte) (checkValue >>> 24);
         return result;
     }
 
     public static int getLength() {
+        // Assumes CHECKSUM is the last field in the header!
         return HeaderField.CHECKSUM.getFieldLoc() + HeaderField.CHECKSUM.getFieldLength();
     }
 
