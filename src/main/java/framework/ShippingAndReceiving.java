@@ -111,7 +111,7 @@ public class ShippingAndReceiving extends Thread {
         }
 
         try {
-            DatagramPacket fullPacket = RaspPacket.createPacketFromPacket((RaspPacket) transferControl.getSendQueue().take());
+            DatagramPacket fullPacket = RaspPacket.serialize((RaspPacket) transferControl.getSendQueue().take());
             System.out.println("Sending.");
             socket.send(fullPacket);
         } catch (IOException e) {

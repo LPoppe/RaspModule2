@@ -39,7 +39,9 @@ public class RaspHeader {
 
     }
 
-    // Constructor for creation of packet.
+    /**
+     * Creates a new header for a RaspPacket.
+     */
     public RaspHeader(int seqNumber, int ackNumber, byte[] payload, ControlFlag controlFlag) {
         this.seqNr = seqNumber;
         this.ackNr = ackNumber;
@@ -49,7 +51,8 @@ public class RaspHeader {
     }
 
     /**
-     * Creates a header object from the data of a DatagramPacket received.
+     * Reads the information from a received packet into a new header.
+     * This is used before a new RaspPacket is created and checksums are compared.
      * @param bufferedHeader the contents of the header in a ByteBuffer.
      */
     public RaspHeader(ByteBuffer bufferedHeader) {
@@ -83,28 +86,18 @@ public class RaspHeader {
     }
 
     /**
-     * The checksum is calculated over only the payload.
+     * The checksum calculated over the header fields and a payload.
      * @param payload the payload the checksum needs to be calculated over.
      * @return the checksum value (a long).
      */
-    private static byte[] createChecksum(byte[] payload) {
+    byte[] createChecksum(byte[] payload) {
         CRC32 checksum = new CRC32();
+        checksum.update(this.seqNr);
+        checksum.update(this.ackNr);
+        checksum.update(this.flag.getFlag());
+        checksum.update(this.payloadLength);
         checksum.update(payload);
         return longToBytes(checksum.getValue());
-    }
-
-    /**
-     * Compares a new calculation of the checksum over a payload with that contained within the header of the packet.
-     * @param packet the received packet.
-     * @return true if checksum is validated.
-     */
-    public static boolean testChecksum(RaspPacket packet) {
-        byte[] payload = packet.getPayload();
-        byte[] expected = createChecksum(payload);
-        System.out.printf("Header contains: seq %s, ack %s, pl %s, flag %s, check %s \n",
-                packet.getHeader().seqNr, packet.getHeader().ackNr, packet.getHeader().payloadLength,
-                packet.getHeader().flag, Arrays.toString(packet.getHeader().checksum));
-        return Arrays.equals(expected, packet.getHeader().checksum);
     }
 
     /** Convert the long from a checksum into 4 bytes **/

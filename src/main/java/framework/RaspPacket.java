@@ -1,65 +1,57 @@
 package framework;
 
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class RaspPacket {
 
-    public static final int MAX_PACKET_SIZE = 1024;
-
-    private InetAddress address;
-    private int port;
     private byte[] payload;
     private RaspHeader header;
 
     /**
-     * Construct a RaspPacket filling the contents.
+     * Construct a RaspPacket for sending.
      */
-    public RaspPacket(byte[] payload, InetAddress address,
-                      int port, int seqNumber, int ackNumber, ControlFlag controlFlag) {
-        this.address = address;
-        this.port = port;
+    public RaspPacket(byte[] payload, int seqNumber, int ackNumber, ControlFlag controlFlag) {
         this.payload = payload;
         this.header = new RaspHeader(seqNumber, ackNumber, payload, controlFlag);
     }
 
     /**
-     * Construct a RaspPacket based on a (received) DatagramPacket.
+     * Construct a RaspPacket from received content.
      */
-    public RaspPacket(DatagramPacket packet) {
-        this.address = packet.getAddress();
-        this.port = packet.getPort();
-        this.payload = Arrays.copyOfRange(packet.getData(), RaspHeader.getLength(), packet.getLength());
-        ByteBuffer bufferedRaspHeader = ByteBuffer.wrap(packet.getData(), 0,
-                packet.getLength() - this.payload.length);
-        this.header = new RaspHeader(bufferedRaspHeader);
+    public RaspPacket(byte[] payload, RaspHeader header) {
+        this.payload = payload;
+        this.header = header;
     }
 
-    /**
-     * Creates a final DatagramPacket from the information in this RaspPacket.
-     * @return a DatagramPacket to be sent by ShippingAndReceiving.
-     */
-    public DatagramPacket createPacket() {
+    public static RaspPacket deserialize(DatagramPacket request) throws InvalidChecksumException {
+        byte[] payload = Arrays.copyOfRange(request.getData(), RaspHeader.getLength(), request.getLength());
+        ByteBuffer bufferedRaspHeader = ByteBuffer.wrap(request.getData(), 0,
+                request.getLength() - payload.length);
+        RaspHeader header = new RaspHeader(bufferedRaspHeader);
+        RaspPacket raspPacket = new RaspPacket(payload, header);
+
+        byte[] expectedChecksum = raspPacket.createChecksum();
+
+        if (Arrays.equals(expectedChecksum, header.getChecksum())) {
+            return raspPacket;
+        } else {
+            throw new InvalidChecksumException();
+        }
+    }
+
+    private byte[] createChecksum() {
+        return this.getHeader().createChecksum(this.getPayload());
+    }
+
+    public byte[] serialize() {
         // Content = header + payload.
         byte[] content = new byte[RaspHeader.getLength() + this.payload.length];
-        System.arraycopy(header.getHeader(),0, content,0, RaspHeader.getLength());
-        System.arraycopy(this.payload,0, content, RaspHeader.getLength(), this.payload.length);
-        return new DatagramPacket(content, content.length, address, port);
+        System.arraycopy(this.getHeader().getHeader(), 0, content, 0, RaspHeader.getLength());
+        System.arraycopy(this.payload, 0, content, RaspHeader.getLength(), this.payload.length);
+        return content;
     }
-
-    public static DatagramPacket createPacketFromPacket(RaspPacket packet) {
-        // Content = header + payload.
-        byte[] content = new byte[RaspHeader.getLength() + packet.payload.length];
-        System.arraycopy(packet.getHeader().getHeader(),0, content,0, RaspHeader.getLength());
-        System.arraycopy(packet.payload,0, content, RaspHeader.getLength(), packet.payload.length);
-        return new DatagramPacket(content, content.length, packet.getAddress(), packet.getPort());
-    }
-
-    public InetAddress getAddress() { return this.address;}
-
-    public int getPort() { return this.port; }
 
     public byte[] getPayload() {
         return this.payload;
