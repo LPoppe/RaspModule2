@@ -1,10 +1,9 @@
 package framework;
 
+import framework.rasphandling.*;
+
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.util.HashMap;
 
 public class RaspServer extends Thread {
@@ -20,6 +19,9 @@ public class RaspServer extends Thread {
     private static final int UDP_HEADER_LENGTH = 8;
     private static final int IP_HEADER_LENGTH = 20;
     private static final int MAX_RASP_PACKET_SIZE = 65535 - UDP_HEADER_LENGTH - IP_HEADER_LENGTH - RaspHeader.getLength();
+
+    // The timeout of receiving upon which handlers should reset their sending window.
+    private static final int RESEND_TIMEOUT = 1000; // milliseconds
 
     // For server, map clients that have sent SYN, so we know who is allowed to send other requests.
     private HashMap<RaspAddress, RaspConnectionHandler> knownClients = new HashMap<>();
@@ -65,6 +67,9 @@ public class RaspServer extends Thread {
 
             try {
                 socket.receive(request);
+            } catch (SocketTimeoutException e) {
+                checkForTimeOuts();
+                continue;
             } catch (IOException e) {
                 System.err.println("I/O error: " + e.getMessage());
                 e.printStackTrace();
@@ -94,11 +99,24 @@ public class RaspServer extends Thread {
                     removeClient(packetOrigin);
                 }
             }
+
+            // Check if any handlers need to resend packets.
+            checkForTimeOuts();
         }
 
         // Once finished, close the socket.
         socket.close();
 
+    }
+
+    private void checkForTimeOuts() {
+        long currentTime = System.currentTimeMillis();
+        for (RaspConnectionHandler handler : knownClients.values()) {
+            long timeElapsed = handler.getLastTimeReceived() - currentTime;
+            if (timeElapsed >= RESEND_TIMEOUT) {
+                handler.resetWindow();
+            }
+        }
     }
 
     /** Add a new client to the mapping of the clients known to a server, occurs after an ACK.

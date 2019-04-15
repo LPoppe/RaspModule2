@@ -1,6 +1,7 @@
 package framework;
 
 import deskfileclient.AppCommand;
+import framework.rasphandling.RaspHeader;
 
 import java.nio.ByteBuffer;
 

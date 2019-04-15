@@ -1,8 +1,10 @@
 package framework;
 
+import framework.rasphandling.RaspConnectionHandler;
+import framework.rasphandling.RaspHeader;
+
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import java.util.HashMap;
 
 public class RaspClient {
 

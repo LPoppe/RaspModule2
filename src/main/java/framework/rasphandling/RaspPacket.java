@@ -1,4 +1,6 @@
-package framework;
+package framework.rasphandling;
+
+import framework.InvalidChecksumException;
 
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
@@ -12,9 +14,9 @@ public class RaspPacket {
     /**
      * Construct a RaspPacket for sending.
      */
-    public RaspPacket(byte[] payload, int seqNumber, int ackNumber, ControlFlag controlFlag) {
+    public RaspPacket(byte[] payload, int seqNumber, ControlFlag controlFlag) {
         this.payload = payload;
-        this.header = new RaspHeader(seqNumber, ackNumber, payload, controlFlag);
+        this.header = new RaspHeader(seqNumber, payload, controlFlag);
     }
 
     /**
@@ -45,10 +47,12 @@ public class RaspPacket {
         return this.getHeader().createChecksum(this.getPayload());
     }
 
-    public byte[] serialize() {
+    public byte[] serialize(int ackNr) {
         // Content = header + payload.
         byte[] content = new byte[RaspHeader.getLength() + this.payload.length];
-        System.arraycopy(this.getHeader().getHeader(), 0, content, 0, RaspHeader.getLength());
+        // Retrieve header information, setting the missing fields.
+        byte[] headerFields = this.getHeader().getHeader(ackNr, this.payload);
+        System.arraycopy(headerFields, 0, content, 0, RaspHeader.getLength());
         System.arraycopy(this.payload, 0, content, RaspHeader.getLength(), this.payload.length);
         return content;
     }
@@ -61,4 +65,7 @@ public class RaspPacket {
         return this.header;
     }
 
+    public static void main(String[] args) {
+        System.out.println("IK");
+    }
 }

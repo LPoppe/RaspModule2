@@ -1,10 +1,18 @@
-package framework;
+package framework.slidingwindow;
+
+import framework.rasphandling.RaspPacket;
+
+import java.util.concurrent.ArrayBlockingQueue;
 
 public abstract class Window {
     protected final int size;
     protected int lowestSeq = 0;
     protected int offset = 0;
     protected RaspPacket[] window;
+
+    // Couldn't find the appropriate lock. This works.
+    private final Object lockToken = new Object();
+    protected ArrayBlockingQueue<Object> offerNotifier;
 
     public Window(int windowSize) {
         this.size = windowSize;
@@ -53,11 +61,12 @@ public abstract class Window {
         return seqNr >= lowestSeq && seqNr < lowestSeq + size;
     }
 
-    public synchronized void offer(RaspPacket packet) {
+    public synchronized void offer(RaspPacket packet) throws InterruptedException {
         int seqNr = packet.getHeader().getSeqNr();
         if (isSeqInWindow(seqNr)) {
             // TODO: What if packet with same seq nr. but different content arrives?
             setBySeqNr(seqNr, packet);
+            this.offerNotifier.offer(lockToken);
         } else {
             throw new IndexOutOfBoundsException("Invalid sequence number while adding to queue.");
         }

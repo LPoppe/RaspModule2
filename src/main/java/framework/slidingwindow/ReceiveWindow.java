@@ -1,4 +1,6 @@
-package framework;
+package framework.slidingwindow;
+
+import framework.rasphandling.RaspPacket;
 
 public class ReceiveWindow extends Window {
 
@@ -6,16 +8,22 @@ public class ReceiveWindow extends Window {
         super(windowSize);
     }
 
-    public synchronized RaspPacket getNext() {
-        if (hasNext()) {
-            return pop();
+    public synchronized RaspPacket getNext() throws InterruptedException {
+        while(true) {
+            offerNotifier.take();
+            if (hasNext()) {
+                return pop();
+            }
         }
-        return null;
     }
 
     public synchronized int getCurrentAck() {
-        // TODO: If wrap-around is used, highestSeq is actually 2^32
         int highestSeq = lowestSeq - 1;
+        if (highestSeq == -1) {
+            // If sequence numbers just wrapped around, highestSeq is actually 2^32!
+            highestSeq = Integer.MAX_VALUE;
+        }
+
         for (RaspPacket packet : window) {
             if (packet == null) {
                 break;

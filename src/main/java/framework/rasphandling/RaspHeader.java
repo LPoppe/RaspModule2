@@ -1,7 +1,6 @@
-package framework;
+package framework.rasphandling;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.zip.CRC32;
 
 public class RaspHeader {
@@ -42,17 +41,14 @@ public class RaspHeader {
     /**
      * Creates a new header for a RaspPacket.
      */
-    public RaspHeader(int seqNumber, int ackNumber, byte[] payload, ControlFlag controlFlag) {
+    public RaspHeader(int seqNumber, byte[] payload, ControlFlag controlFlag) {
         this.seqNr = seqNumber;
-        this.ackNr = ackNumber;
         this.payloadLength = payload.length;
         this.flag = controlFlag;
-        this.checksum = createChecksum(payload);
     }
 
     /**
      * Reads the information from a received packet into a new header.
-     * This is used before a new RaspPacket is created and checksums are compared.
      * @param bufferedHeader the contents of the header in a ByteBuffer.
      */
     public RaspHeader(ByteBuffer bufferedHeader) {
@@ -69,8 +65,13 @@ public class RaspHeader {
         }
     }
 
-    public byte[] getHeader() {
+    public byte[] getHeader(int ackNr, byte[] payload) {
+        // Fill in missing fields.
+        this.setAckNr(ackNr);
+        this.checksum = this.createChecksum(payload);
+
         ByteBuffer fieldBuf = ByteBuffer.allocate(getLength());
+
         // Loop because you can't put arrays at a certain position in a byte buffer.
         int i = HeaderField.CHECKSUM.getFieldLoc();
         for (byte b : this.checksum) {
@@ -121,6 +122,11 @@ public class RaspHeader {
 
     public int getAckNr() {
         return this.ackNr;
+    }
+
+    // The AckNr is only set upon retrieving the data for sending to avoid creating deadlocks.
+    public void setAckNr(int ackNr) {
+        this.ackNr = ackNr;
     }
 
     public ControlFlag getFlag() {

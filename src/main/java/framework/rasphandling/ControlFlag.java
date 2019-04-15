@@ -1,4 +1,4 @@
-package framework;
+package framework.rasphandling;
 
 public enum ControlFlag {
     // Options for the flag set in the packet's header. Only one flag is used per packet.
@@ -36,7 +36,6 @@ public enum ControlFlag {
             return false;
         }
     }, DATA(3) {
-
         @Override
         public void respondToFlag(RaspConnectionHandler handler, RaspPacket packet) {
         }
@@ -45,19 +44,8 @@ public enum ControlFlag {
         public boolean sendWithFlag(RaspConnectionHandler handler) throws InterruptedException {
             return false;
         }
-
-    }, ACKDATA(4) {
-
-        @Override
-        public void respondToFlag(RaspConnectionHandler handler, RaspPacket packet){
-        }
-
-        @Override
-        public boolean sendWithFlag(RaspConnectionHandler handler) throws InterruptedException {
-            return false;
-        }
-
-    }, FIN(5) {
+    },
+        FIN(4) {
         @Override
         public void respondToFlag(RaspConnectionHandler handler, RaspPacket packet) {
         }
