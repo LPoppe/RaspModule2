@@ -1,4 +1,4 @@
-package framework;
+package framework.application;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,14 +12,14 @@ public class FileUpload {
     private boolean isDone;
     private Integer fileIdentifier;
     private int segmentCounter;
-    private TransferController transferControl;
+    private ApplicationHandler applicationHandler;
 
     private BufferedInputStream fileStream;
 
-    public FileUpload(TransferController controller) {
+    public FileUpload(ApplicationHandler applicationHandler) {
         this.isPaused = false;
         this.isDone = false;
-        this.transferControl = controller;
+        this.applicationHandler = applicationHandler;
         this.fileIdentifier = getRandomNotInUse(1, 50000);
         this.segmentCounter = 0;
     }
@@ -62,8 +62,8 @@ public class FileUpload {
         do {
             Random rand = new Random();
             newIdentifier = rand.nextInt((upper - lower) + 1) + lower;
-        } while (transferControl.getUploaders().containsValue(newIdentifier)
-                || transferControl.getDownloaders().containsValue(newIdentifier));
+        } while (applicationHandler.getUploaders().containsValue(newIdentifier)
+                || applicationHandler.getDownloaders().containsValue(newIdentifier));
 
         return newIdentifier;
     }

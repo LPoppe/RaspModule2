@@ -6,26 +6,33 @@ import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public class RaspPacket {
-
-    private byte[] payload;
-    private RaspHeader header;
+public class RaspPacket extends NoAckRaspPacket {
 
     /**
-     * Construct a RaspPacket for sending.
+     * Construct a RaspPacket (through NoAckRaspPacket.toRaspPacket()).
      */
-    public RaspPacket(byte[] payload, int seqNumber, ControlFlag controlFlag) {
-        this.payload = payload;
-        this.header = new RaspHeader(seqNumber, payload, controlFlag);
+    public RaspPacket(byte[] payload, RaspHeader header, int ackNr) {
+        super(payload, header);
+        header.setAckNr(ackNr);
+        createChecksum();
     }
 
     /**
-     * Construct a RaspPacket from received content.
+     * Construct a RaspPacket (through deserialize()).
      */
     public RaspPacket(byte[] payload, RaspHeader header) {
-        this.payload = payload;
-        this.header = header;
+        super(payload, header);
     }
+
+    public byte[] serialize() {
+        // Content = header + payload.
+        byte[] content = new byte[RaspHeader.getLength() + this.payload.length];
+        byte[] headerFields = this.getHeader().getHeader();
+        System.arraycopy(headerFields, 0, content, 0, RaspHeader.getLength());
+        System.arraycopy(this.payload, 0, content, RaspHeader.getLength(), this.payload.length);
+        return content;
+    }
+
 
     public static RaspPacket deserialize(DatagramPacket request) throws InvalidChecksumException {
         byte[] payload = Arrays.copyOfRange(request.getData(), RaspHeader.getLength(), request.getLength());
@@ -41,31 +48,5 @@ public class RaspPacket {
         } else {
             throw new InvalidChecksumException();
         }
-    }
-
-    private byte[] createChecksum() {
-        return this.getHeader().createChecksum(this.getPayload());
-    }
-
-    public byte[] serialize(int ackNr) {
-        // Content = header + payload.
-        byte[] content = new byte[RaspHeader.getLength() + this.payload.length];
-        // Retrieve header information, setting the missing fields.
-        byte[] headerFields = this.getHeader().getHeader(ackNr, this.payload);
-        System.arraycopy(headerFields, 0, content, 0, RaspHeader.getLength());
-        System.arraycopy(this.payload, 0, content, RaspHeader.getLength(), this.payload.length);
-        return content;
-    }
-
-    public byte[] getPayload() {
-        return this.payload;
-    }
-
-    public RaspHeader getHeader() {
-        return this.header;
-    }
-
-    public static void main(String[] args) {
-        System.out.println("IK");
     }
 }

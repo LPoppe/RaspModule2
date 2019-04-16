@@ -1,4 +1,4 @@
-package framework;
+package framework.application;
 
 public enum UploadControl {
     NONE(0), FILENAME(1), LAST(2);

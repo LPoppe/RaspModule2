@@ -1,6 +1,5 @@
-package framework;
+package framework.application;
 
-import deskfileclient.AppCommand;
 import framework.rasphandling.RaspHeader;
 
 import java.nio.ByteBuffer;
@@ -45,7 +44,7 @@ public class AppInformation
     }
 
     /**
-     * The information to be put into the payload of a RaspPacket.
+     * The information to be put into the payload of a NoAckRaspPacket.
      * @param command A command to be sent to the server.
      * @param data the data to be processed.
      */

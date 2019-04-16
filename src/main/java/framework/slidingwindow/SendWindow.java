@@ -1,6 +1,6 @@
 package framework.slidingwindow;
 
-import framework.rasphandling.RaspPacket;
+import framework.rasphandling.NoAckRaspPacket;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -12,10 +12,11 @@ public class SendWindow extends Window {
     private final Object lockToken = new Object();
     private ArrayBlockingQueue<Object> freeSpaceNotifier;
 
+    protected NoAckRaspPacket[] window;
 
     public SendWindow(int windowSize) {
         super(windowSize);
-
+        this.window = new NoAckRaspPacket[windowSize];
         this.freeSpaceNotifier = new ArrayBlockingQueue<>(1);
     }
 
@@ -23,8 +24,8 @@ public class SendWindow extends Window {
         sendOffset = 0;
     }
 
-    public synchronized RaspPacket getNext() {
-        RaspPacket packet = getByIndex(sendOffset);
+    public synchronized NoAckRaspPacket getNext() {
+        NoAckRaspPacket packet = getByIndex(sendOffset);
         if (packet == null) {
             return null;
         } else {
@@ -45,8 +46,25 @@ public class SendWindow extends Window {
         }
     }
 
+    protected NoAckRaspPacket pop() {
+        NoAckRaspPacket packet = getByIndex(0);
+        setByIndex(0, null);
+        lowestSeq++;
+        offset = offset + 1 % 5;
+        return packet;
+    }
+
+    protected NoAckRaspPacket getByIndex(int i) {
+        if (i >= size) {
+            // TODO: ERROR MESSAGE.
+            throw new IndexOutOfBoundsException("");
+        }
+
+        return window[getInternalIndex(i)];
+    }
+
     @Override
-    public void offer(RaspPacket packet) throws InterruptedException {
+    public void offer(NoAckRaspPacket packet) throws InterruptedException {
         this.freeSpaceNotifier.poll();
 
         if (this.isFull()) {

@@ -1,5 +1,8 @@
 package framework;
 
+import framework.application.FileDownload;
+import framework.application.FileUpload;
+
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 

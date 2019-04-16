@@ -1,4 +1,4 @@
-package deskfileclient;
+package framework.application;
 
 import java.io.IOException;
 import java.util.Scanner;

@@ -2,22 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="028b737a-d977-4808-a787-33fe299d8cc1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/RaspSocket.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/framework/application/ApplicationHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/framework/network/RaspClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/framework/network/RaspReceiver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/framework/network/SetLinkedBlockingQueue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/NoAckRaspPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/AppInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/AppInformation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/ControlFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/ControlFlag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/RaspClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspConnectionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspHeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspHeader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/RaspSender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/RaspServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/ReceiveWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/ReceiveWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/SendWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/SendWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/ShippingAndReceiving.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/tempstorage/ShippingAndReceiving.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/TransferController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/tempstorage/TransferController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/framework/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/deskfileclient/AppCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/application/AppCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/deskfileclient/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/application/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/deskfileclient/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileclient/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/deskfileclient/StatisticsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/application/StatisticsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/AppInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/application/AppInformation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/FileDownload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/application/FileDownload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/FileUpload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/application/FileUpload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/network/RaspSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/RaspServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/network/RaspServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/UploadControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/application/UploadControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/rasphandling/ControlFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/ControlFlag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspConnectionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspHeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspHeader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/RaspSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/RaspSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/ReceiveWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/ReceiveWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/SendWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/SendWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/slidingwindow/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/framework/tempstorage/TransferController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/framework/tempstorage/TransferController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pifileserver/FileManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pifileserver/FileServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileserver/FileServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/framework/RaspHeaderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/framework/RaspPacketTest.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -49,31 +66,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/framework/RaspServer.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/SendWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="27" column="35" lean-forward="true" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
+            <state relative-caret-position="667">
+              <caret line="31" column="25" lean-forward="true" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
               <folding>
-                <element signature="e#5015#5016#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/net/DatagramSocket.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="727" column="29" selection-start-line="727" selection-start-column="29" selection-end-line="727" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/framework/RaspSender.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="35" column="35" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -81,86 +80,105 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/RaspSocket.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="879">
-              <caret line="106" column="34" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
+            <state relative-caret-position="253">
+              <caret line="44" column="5" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3534#3535#0" expanded="true" />
-                <element signature="e#3573#3574#0" expanded="true" />
-                <element signature="e#3595#3596#0" expanded="true" />
-                <element signature="e#3668#3669#0" expanded="true" />
-                <element signature="e#3708#3709#0" expanded="true" />
+                <element signature="e#4136#4137#0" expanded="true" />
+                <element signature="e#4164#4165#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/ReceiveWindow.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/ControlFlag.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="15" column="13" lean-forward="true" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+            <state relative-caret-position="46">
+              <caret line="2" column="42" lean-forward="true" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/SendWindow.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/RaspReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="26" column="36" selection-start-line="26" selection-start-column="36" selection-end-line="26" selection-end-column="36" />
+            <state relative-caret-position="620">
+              <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#212#213#0" expanded="true" />
-                <element signature="e#242#243#0" expanded="true" />
-                <element signature="e#1816#1817#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspConnectionHandler.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/SetLinkedBlockingQueue.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="40" column="52" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
+            <state relative-caret-position="680">
+              <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1620#1621#0" expanded="true" />
-                <element signature="e#1665#1666#0" expanded="true" />
-                <element signature="e#1713#1714#0" expanded="true" />
-                <element signature="e#1741#1742#0" expanded="true" />
-                <element signature="e#2302#2303#0" expanded="true" />
-                <element signature="e#2359#2360#0" expanded="true" />
-                <element signature="e#2439#2440#0" expanded="true" />
-                <element signature="e#2558#2559#0" expanded="true" />
-                <element signature="e#2436#2437#0" expanded="true" />
-                <element signature="e#2472#2473#0" expanded="true" />
-                <element signature="e#2510#2511#0" expanded="true" />
-                <element signature="e#2536#2537#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/concurrent/LinkedBlockingQueue.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/RaspSender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="409" column="19" selection-start-line="409" selection-start-column="19" selection-end-line="409" selection-end-column="19" />
+            <state relative-caret-position="316">
+              <caret line="39" selection-start-line="39" selection-end-line="39" />
               <folding>
-                <element signature="e#9956#9957#0" expanded="true" />
-                <element signature="e#10001#10002#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/RaspClient.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1065">
+              <caret line="73" column="77" lean-forward="true" selection-start-line="73" selection-start-column="77" selection-end-line="73" selection-end-column="77" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/framework/FileDownload.java">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/net/DatagramPacket.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+            <state relative-caret-position="426">
+              <caret line="158" column="11" selection-start-line="158" selection-start-column="11" selection-end-line="158" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/framework/tempstorage/ShippingAndReceiving.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1462">
+              <caret line="154" column="30" lean-forward="true" selection-start-line="154" selection-start-column="30" selection-end-line="154" selection-end-column="30" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/Window.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#493#494#0" expanded="true" />
+                <element signature="e#531#532#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -191,6 +209,7 @@
       <find>read</find>
       <find>get(</find>
       <find>syn</find>
+      <find>RaspSocket</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -199,20 +218,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/framework/ContentFlag.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/RaspDatagram.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/FileQueue.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/PacketQueue.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/FileTransfer.java" />
-        <option value="$PROJECT_DIR$/src/test/java/framework/RaspHeaderTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/framework/RaspPacketTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pifileserver/FileServer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/FileDownload.java" />
-        <option value="$PROJECT_DIR$/src/main/java/deskfileclient/FileClient.java" />
-        <option value="$PROJECT_DIR$/src/main/java/deskfileclient/ClientCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/deskfileclient/Commands.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/UploadControl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/deskfileclient/AppCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/MessageController.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/FileUpload.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/TransferController.java" />
@@ -225,14 +230,12 @@
         <option value="$PROJECT_DIR$/src/main/java/framework/RaspHeader.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/RaspPacket.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/RaspClientHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/RaspClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/ControlFlag.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/receiveWindow.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/Window.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/ReceiveWindow.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/SendWindow.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/RaspConnectionHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspHeader.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspPacketBuilder.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/WindowRapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/WindowWrapper.java" />
@@ -240,24 +243,40 @@
         <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/windowWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/sendWindowWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/raspSocket.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/ControlFlag.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/SendWindow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspPacket.java" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/RaspSender.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/RaspServer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/RaspReceiver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/RaspClient.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/application/UploadControl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pifileserver/FileServer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/deskfileclient/FileClient.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/application/FileUpload.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/application/ApplicationHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/network/RaspServer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/AcklessRaspPacket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/NoAckRaspPacket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspPacket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspHeader.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/Window.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/ReceiveWindow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/RaspServer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/RaspSocket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/SendWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/network/SetLinkedBlockingQueue.java" />
         <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspConnectionHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/framework/RaspSender.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/network/RaspReceiver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspSocket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/slidingwindow/RaspSocket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/rasphandling/ControlFlag.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/network/RaspSender.java" />
+        <option value="$PROJECT_DIR$/src/main/java/framework/network/RaspClient.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1912" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="360" />
+    <option name="y" value="195" />
+    <option name="width" value="2160" />
+    <option name="height" value="1170" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -265,7 +284,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -297,7 +315,50 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="fileclient" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RaspModule2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RaspModule2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="fileserver" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RaspModule2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RaspModule2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="framework" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RaspModule2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RaspModule2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="framework" type="462c0819:PsiDirectoryNode" />
+              <item name="network" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RaspModule2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RaspModule2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="framework" type="462c0819:PsiDirectoryNode" />
+              <item name="rasphandling" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RaspModule2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RaspModule2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="framework" type="462c0819:PsiDirectoryNode" />
+              <item name="slidingwindow" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RaspModule2" type="b2602c69:ProjectViewProjectNode" />
@@ -308,11 +369,19 @@
               <item name="framework" type="462c0819:PsiDirectoryNode" />
               <item name="tempstorage" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="RaspModule2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RaspModule2" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -328,7 +397,7 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspConnectionHandler.java" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -340,9 +409,6 @@
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="framework" />
-    </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="framework" />
     </key>
@@ -352,15 +418,19 @@
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Linda Poppe\IdeaProjects\RaspModule2\src\main\java\framework\tempstorage" />
+      <recent name="C:\Users\linda.poppe\Documents\GitHub\RaspModule2\src\main\resources" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\linda.poppe\Documents\GitHub\RaspModule2" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="framework" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Linda Poppe\IdeaProjects\RaspModule2\src\main\java\framework\tempstorage" />
-      <recent name="C:\Users\linda.poppe\Documents\GitHub\RaspModule2\src\main\resources" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="framework.application" />
+      <recent name="framework" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -375,14 +445,14 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Java Scratch.Scratch">
+  <component name="RunManager" selected="Application.FileClient">
     <configuration name="FileClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="deskfileclient.FileClient" />
+      <option name="MAIN_CLASS_NAME" value="fileclient.FileClient" />
       <module name="RaspModule2.main" />
       <option name="VM_PARAMETERS" value="-Djava.net.preferIPv4Stack=true" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="deskfileclient.*" />
+          <option name="PATTERN" value="framework.application.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -391,12 +461,12 @@
       </method>
     </configuration>
     <configuration name="FileServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="pifileserver.FileServer" />
+      <option name="MAIN_CLASS_NAME" value="fileserver.FileServer" />
       <module name="RaspModule2.main" />
       <option name="VM_PARAMETERS" value="-Djava.net.preferIPv4Stack=true" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pifileserver.*" />
+          <option name="PATTERN" value="fileserver.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -404,8 +474,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RaspPacket" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="framework.rasphandling.RaspPacket" />
+    <configuration name="NoAckRaspPacket" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="framework.rasphandling.NoAckRaspPacket" />
       <module name="RaspModule2.main" />
       <extension name="coverage">
         <pattern>
@@ -442,16 +512,16 @@
     <list>
       <item itemvalue="Application.FileClient" />
       <item itemvalue="Application.FileServer" />
-      <item itemvalue="JUnit.RaspHeaderTest" />
-      <item itemvalue="Application.RaspPacket" />
+      <item itemvalue="Application.NoAckRaspPacket" />
       <item itemvalue="Java Scratch.Scratch" />
+      <item itemvalue="JUnit.RaspHeaderTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Java Scratch.Scratch" />
-        <item itemvalue="Application.RaspPacket" />
         <item itemvalue="Application.FileClient" />
         <item itemvalue="Application.FileServer" />
+        <item itemvalue="Java Scratch.Scratch" />
+        <item itemvalue="Application.NoAckRaspPacket" />
         <item itemvalue="JUnit.RaspHeaderTest" />
       </list>
     </recent_temporary>
@@ -478,6 +548,7 @@
       <workItem from="1555053774000" duration="17163000" />
       <workItem from="1555244591452" duration="30545000" />
       <workItem from="1555315531329" duration="31782000" />
+      <workItem from="1555398586709" duration="22524000" />
     </task>
     <servers />
   </component>
@@ -490,12 +561,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="201095000" />
+    <option name="totallyTimeSpent" value="223697000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="2575" height="1415" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.22610097" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1276845" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -504,8 +576,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Inspection Results" order="0" weight="0.32980973" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.32875264" />
-      <window_info anchor="bottom" id="Run" order="3" weight="0.29915434" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.32826748" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.24924012" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.39969605" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -517,7 +589,7 @@
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="13" />
       <window_info anchor="bottom" id="Version Control" order="14" />
-      <window_info anchor="bottom" id="Messages" order="15" weight="0.32875264" />
+      <window_info anchor="bottom" id="Messages" order="15" weight="0.32826748" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -573,13 +645,74 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/zip/CRC32.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/PacketQueue.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/PacketReceiver.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/io/BufferedInputStream.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/io/InputStream.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/io/FileInputStream.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/nio/Buffer.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/nio/ByteBuffer.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/lang/Thread.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/Objects.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/net/DatagramPacket.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/zip/CRC32.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/InvalidChecksumException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/ArrayList.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/EventListener.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/Arrays.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/nio/ByteBuffer.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/nio/Buffer.java" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/net/DatagramSocket.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/concurrent/LinkedBlockingQueue.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/application/AppCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/application/ClientController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/application/StatisticsHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/application/AppInformation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pifileserver/FileManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/application/UploadControl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/framework/RaspHeaderTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
@@ -590,209 +723,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/nio/HeapByteBuffer.java" />
-    <entry file="file://$PROJECT_DIR$/src/test/java/framework/RaspPacketTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspAddress.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/net/SocketTimeoutException.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/net/DatagramSocket.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/BaseProtocol.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/zip/CheckedInputStream.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/deskfileclient/ClientController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="59">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/concurrent/LinkedBlockingQueue.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/nio/ByteBuffer.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/UploadControl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="34" lean-forward="true" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/deskfileclient/AppCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/deskfileclient/FileClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
+        <state relative-caret-position="92">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/framework/tempstorage/TransferController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="48" lean-forward="true" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        <state relative-caret-position="1048">
+          <caret line="75" column="4" selection-start-line="75" selection-start-column="4" selection-end-line="81" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/lang/Thread.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/application/ApplicationHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="1316" column="25" selection-start-line="1316" selection-start-column="20" selection-end-line="1316" selection-end-column="25" />
+        <state relative-caret-position="552">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/Objects.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/fileserver/FileServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="205" lean-forward="true" selection-start-line="205" selection-end-line="205" />
+        <state relative-caret-position="138">
+          <caret line="8" column="5" lean-forward="true" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/net/DatagramPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/application/FileDownload.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="98" column="11" selection-start-line="98" selection-start-column="11" selection-end-line="98" selection-end-column="11" />
-          <folding>
-            <element signature="e#2362#2363#0" expanded="true" />
-            <element signature="e#2399#2400#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="92">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/zip/CRC32.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/application/FileUpload.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
-          <folding>
-            <element signature="e#919#920#0" expanded="true" />
-            <element signature="e#955#956#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/InvalidChecksumException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/RaspClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="25" column="33" lean-forward="true" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="33" />
+        <state relative-caret-position="1209">
+          <caret line="66" column="79" lean-forward="true" selection-start-line="66" selection-start-column="79" selection-end-line="66" selection-end-column="79" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/ArrayList.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/fileclient/FileClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="470" column="6" lean-forward="true" selection-start-line="470" selection-start-column="6" selection-end-line="470" selection-end-column="6" />
+        <state relative-caret-position="138">
+          <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspAddress.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/Objects.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        <state relative-caret-position="817">
+          <caret line="125" column="6" lean-forward="true" selection-start-line="100" selection-start-column="3" selection-end-line="125" selection-end-column="6" />
+          <folding>
+            <element signature="e#3914#3915#0" expanded="true" />
+            <element signature="e#3960#3961#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspHeader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1980">
-          <caret line="94" column="37" lean-forward="true" selection-start-line="94" selection-start-column="37" selection-end-line="94" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4189#4190#0" expanded="true" />
-            <element signature="e#4223#4224#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/AppInformation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1012">
-          <caret line="50" column="7" lean-forward="true" selection-start-line="50" selection-start-column="7" selection-end-line="50" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/ControlFlag.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1298">
-          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
-          <folding>
-            <element signature="e#2235#2236#0" expanded="true" />
-            <element signature="e#2267#2268#0" expanded="true" />
-            <marker date="1555336799589" expanded="true" signature="1108:1156" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/EventListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/Arrays.java">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
-          <caret line="70" column="13" selection-start-line="70" selection-start-column="13" selection-end-line="70" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/nio/ByteBuffer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="807" column="6" lean-forward="true" selection-start-line="807" selection-start-column="6" selection-end-line="807" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/nio/Buffer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="400" column="25" selection-start-line="400" selection-start-column="25" selection-end-line="400" selection-end-column="25" />
+          <caret line="77" column="16" lean-forward="true" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
           <folding>
-            <element signature="e#7176#7177#0" expanded="true" />
-            <element signature="e#7207#7208#0" expanded="true" />
-            <element signature="e#12171#12172#0" expanded="true" />
-            <element signature="e#12210#12211#0" expanded="true" />
-            <element signature="e#12489#12490#0" expanded="true" />
-            <element signature="e#12528#12529#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pifileserver/FileServer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/NoAckRaspPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+        <state relative-caret-position="667">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -801,45 +811,138 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="30" column="27" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
+        <state relative-caret-position="611">
+          <caret line="29" column="53" selection-start-line="29" selection-start-column="53" selection-end-line="29" selection-end-column="53" />
           <folding>
-            <element signature="e#2073#2074#0" expanded="true" />
-            <element signature="e#2108#2109#0" expanded="true" />
-            <element signature="e#2225#2226#0" expanded="true" />
-            <element signature="e#2260#2261#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#597#598#0" expanded="true" />
+            <element signature="e#635#636#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/FileDownload.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/RaspServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/FileUpload.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="667">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#277#278#0" expanded="true" />
+            <element signature="e#304#305#0" expanded="true" />
+            <element signature="e#4960#4961#0" expanded="true" />
+            <element signature="e#5015#5016#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/ReceiveWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="15" column="13" lean-forward="true" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        <state relative-caret-position="207">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/tempstorage/ShippingAndReceiving.java">
+    <entry file="file://$PROJECT_DIR$/gradlew">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="62" column="13" lean-forward="true" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
+        <state relative-caret-position="782">
+          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/Queue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="887">
+          <caret line="198" column="6" selection-start-line="198" selection-start-column="6" selection-end-line="198" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/concurrent/LinkedBlockingQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="464" column="31" lean-forward="true" selection-start-line="464" selection-start-column="31" selection-end-line="464" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/util/concurrent/BlockingQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="472">
+          <caret line="277" lean-forward="true" selection-start-line="277" selection-end-line="277" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspSocket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="15" column="37" lean-forward="true" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/SetLinkedBlockingQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/ControlFlag.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="42" lean-forward="true" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#493#494#0" expanded="true" />
+            <element signature="e#531#532#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/RaspSocket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="44" column="5" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4136#4137#0" expanded="true" />
+            <element signature="e#4164#4165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/RaspReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/RaspSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -848,96 +951,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/SendWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="26" column="36" selection-start-line="26" selection-start-column="36" selection-end-line="26" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#212#213#0" expanded="true" />
-            <element signature="e#242#243#0" expanded="true" />
-            <element signature="e#1816#1817#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/Window.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
+        <state relative-caret-position="667">
+          <caret line="31" column="25" lean-forward="true" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/slidingwindow/RaspSocket.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/net/DatagramPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="879">
-          <caret line="106" column="34" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
+        <state relative-caret-position="426">
+          <caret line="158" column="11" selection-start-line="158" selection-start-column="11" selection-end-line="158" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/tempstorage/ShippingAndReceiving.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1462">
+          <caret line="154" column="30" lean-forward="true" selection-start-line="154" selection-start-column="30" selection-end-line="154" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3534#3535#0" expanded="true" />
-            <element signature="e#3573#3574#0" expanded="true" />
-            <element signature="e#3595#3596#0" expanded="true" />
-            <element signature="e#3668#3669#0" expanded="true" />
-            <element signature="e#3708#3709#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/RaspServer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/framework/network/RaspClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="27" column="35" lean-forward="true" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
-          <folding>
-            <element signature="e#5015#5016#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/net/DatagramSocket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="727" column="29" selection-start-line="727" selection-start-column="29" selection-end-line="727" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/concurrent/LinkedBlockingQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="409" column="19" selection-start-line="409" selection-start-column="19" selection-end-line="409" selection-end-column="19" />
-          <folding>
-            <element signature="e#9956#9957#0" expanded="true" />
-            <element signature="e#10001#10002#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/rasphandling/RaspConnectionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="40" column="52" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
+        <state relative-caret-position="1065">
+          <caret line="73" column="77" lean-forward="true" selection-start-line="73" selection-start-column="77" selection-end-line="73" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1620#1621#0" expanded="true" />
-            <element signature="e#1665#1666#0" expanded="true" />
-            <element signature="e#1713#1714#0" expanded="true" />
-            <element signature="e#1741#1742#0" expanded="true" />
-            <element signature="e#2302#2303#0" expanded="true" />
-            <element signature="e#2359#2360#0" expanded="true" />
-            <element signature="e#2439#2440#0" expanded="true" />
-            <element signature="e#2558#2559#0" expanded="true" />
-            <element signature="e#2436#2437#0" expanded="true" />
-            <element signature="e#2472#2473#0" expanded="true" />
-            <element signature="e#2510#2511#0" expanded="true" />
-            <element signature="e#2536#2537#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/framework/RaspSender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="35" column="35" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
         </state>
       </provider>
     </entry>

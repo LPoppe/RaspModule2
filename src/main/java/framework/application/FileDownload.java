@@ -1,4 +1,4 @@
-package framework;
+package framework.application;
 
 import java.io.*;
 import java.nio.file.Files;

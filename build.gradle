@@ -17,7 +17,7 @@ ssh.settings {
   knownHosts = allowAnyHosts    // Disable host key verification
 }
 
-mainClassName = 'pifileserver.FileServer'
+mainClassName = 'fileserver.FileServer'
 version = '0.0.1'
 
 jar {

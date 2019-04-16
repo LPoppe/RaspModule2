@@ -1,24 +1,45 @@
 package framework.slidingwindow;
 
+import framework.network.RaspSender;
+import framework.rasphandling.NoAckRaspPacket;
 import framework.rasphandling.ControlFlag;
-import framework.rasphandling.RaspConnectionHandler;
+import framework.rasphandling.RaspAddress;
 import framework.rasphandling.RaspPacket;
+import javafx.util.Pair;
 
 import java.nio.ByteBuffer;
 
 public class RaspSocket {
 
+
+    // The address this handler needs to handle communication with.
+    private final RaspAddress address;
+    private final RaspSender raspSender;
+    private final int maxPacketSize;
+
+
+    // ackNr = seq nr. of next expected ACK (other side's seq nr).
+    private int seqNr = 0;
+    private int ackNr = 0;
+
+    // Tracking of timeout.
+    //TODO: timeout = 10x average RTT?
+    private long lastTimeReceived = System.currentTimeMillis();
+
     private ReceiveWindow receiveWindow;
     private SendWindow sendWindow;
-    private RaspConnectionHandler handler;
     private final Object readLock;
     private final Object writeLock;
     private ByteBuffer leftoverBytes;
 
-    public RaspSocket(RaspConnectionHandler handler) {
+    public RaspSocket(RaspSender sender, RaspAddress address, int maxRaspPacketSize) {
+        this.address = address;
+        this.raspSender = sender;
+        this.maxPacketSize = maxRaspPacketSize;
+
         this.receiveWindow = new ReceiveWindow(10);
         this.sendWindow = new SendWindow(10);
-        this.handler = handler;
+
         this.readLock = new Object();
         this.writeLock = new Object();
     }
@@ -45,11 +66,11 @@ public class RaspSocket {
             }
 
             // longer than max?
-            int lenToRead = Math.min(buffer.remaining(), handler.getMaxPacketSize());
+            int lenToRead = Math.min(buffer.remaining(), maxPacketSize);
             byte[] packetArray = new byte[lenToRead];
             buffer.get(packetArray);
-            RaspPacket packet = new RaspPacket(packetArray, handler.getSeqNr(), ControlFlag.DATA);
-            handler.increaseSeqNr();
+            NoAckRaspPacket packet = new NoAckRaspPacket(packetArray, seqNr, ControlFlag.DATA);
+            increaseSeqNr();
             this.sendWindow.offer(packet);
 
             // send the rest.
@@ -58,7 +79,7 @@ public class RaspSocket {
     }
 
     /**
-     * Retrieves the next RaspPacket in the receiveWindow and removes the header.
+     * Retrieves the next NoAckRaspPacket in the receiveWindow and removes the header.
      * @return the packet's payload
      */
     public byte[] read(int nBytes) throws InterruptedException {
@@ -80,7 +101,7 @@ public class RaspSocket {
 
         } else {
             // If there were no remaining bytes, get the next packet (blocks until a packet is available).
-            RaspPacket packet = receiveWindow.getNext();
+            NoAckRaspPacket packet = receiveWindow.getNext();
             byte[] payload = packet.getPayload();
             int payloadLength = packet.getPayload().length;
             int bytesToFill = Math.min(payloadLength, readBuffer.limit());
@@ -95,8 +116,62 @@ public class RaspSocket {
         return read(readBuffer);
     }
 
+    /**
+     * Resets the offset of the sending window to resend packets that have not been acknowledged before timeout.
+     */
     public void resend() {
         sendWindow.resetOffset();
+    }
+
+    public void handlePacket(RaspPacket raspPacket) {
+        // Reset the last time a packet was received to current time.
+        setLastTimeReceived(System.currentTimeMillis());
+
+        raspPacket.getHeader().getFlag().respondToFlag(this, raspPacket);
+    }
+
+    public void offer(NoAckRaspPacket packet) throws InterruptedException {
+        while (this.sendWindow.hasNext()) {
+            raspSender.getSendQueue().add(new Pair<>(this.address, this.sendWindow.getNext()));
+        }
+
+        offer(packet);
+    }
+
+    public void increaseSeqNr() {
+        this.seqNr++;
+    }
+
+    /**
+     * Set the ack number (last seq nr. received).
+     * Ignore the ack number if higher seq nr. has already arrived.
+     */
+    public void setAckNr(NoAckRaspPacket packet) {
+        //TODO: Does not wrap around.
+        int packetAck = packet.getHeader().getSeqNr();
+        if (packetAck > this.ackNr) {
+            this.ackNr = packetAck;
+        }
+    }
+
+    public int getSeqNr() {
+        return seqNr;
+    }
+
+    public int getAckNr() {
+        return ackNr;
+    }
+
+    public long getLastTimeReceived() {
+        return lastTimeReceived;
+    }
+
+    private void setLastTimeReceived(long lastTimeReceived) {
+        this.lastTimeReceived = lastTimeReceived;
+    }
+
+    public int getMaxPacketSize() {
+        return maxPacketSize;
     }
 
     public SendWindow getSendWindow() {
@@ -105,5 +180,9 @@ public class RaspSocket {
 
     public ReceiveWindow getReceiveWindow() {
         return this.receiveWindow;
+    }
+
+    public RaspAddress getAddress() {
+        return address;
     }
 }

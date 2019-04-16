@@ -4,8 +4,11 @@ import framework.rasphandling.RaspPacket;
 
 public class ReceiveWindow extends Window {
 
+    private RaspPacket[] window;
+
     public ReceiveWindow(int windowSize) {
         super(windowSize);
+        this.window = new RaspPacket[windowSize];
     }
 
     public synchronized RaspPacket getNext() throws InterruptedException {
@@ -34,4 +37,20 @@ public class ReceiveWindow extends Window {
         return highestSeq;
     }
 
+    protected RaspPacket pop() {
+        RaspPacket packet = getByIndex(0);
+        setByIndex(0, null);
+        lowestSeq++;
+        offset = offset + 1 % 5;
+        return packet;
+    }
+
+    protected RaspPacket getByIndex(int i) {
+        if (i >= size) {
+            // TODO: ERROR MESSAGE.
+            throw new IndexOutOfBoundsException("");
+        }
+
+        return window[getInternalIndex(i)];
+    }
 }

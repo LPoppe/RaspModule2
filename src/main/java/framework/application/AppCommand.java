@@ -1,4 +1,4 @@
-package deskfileclient;
+package framework.application;
 
 public enum AppCommand {
     QUIT(0),

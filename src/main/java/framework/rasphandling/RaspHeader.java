@@ -1,6 +1,8 @@
 package framework.rasphandling;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.zip.CRC32;
 
 public class RaspHeader {
@@ -39,7 +41,7 @@ public class RaspHeader {
     }
 
     /**
-     * Creates a new header for a RaspPacket.
+     * Creates a new header for a NoAckRaspPacket.
      */
     public RaspHeader(int seqNumber, byte[] payload, ControlFlag controlFlag) {
         this.seqNr = seqNumber;
@@ -65,10 +67,7 @@ public class RaspHeader {
         }
     }
 
-    public byte[] getHeader(int ackNr, byte[] payload) {
-        // Fill in missing fields.
-        this.setAckNr(ackNr);
-        this.checksum = this.createChecksum(payload);
+    public byte[] getHeader() {
 
         ByteBuffer fieldBuf = ByteBuffer.allocate(getLength());
 
@@ -140,5 +139,25 @@ public class RaspHeader {
     public byte[] getChecksum() {
         return this.checksum;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RaspHeader that = (RaspHeader) o;
+        return seqNr == that.seqNr &&
+                ackNr == that.ackNr &&
+                payloadLength == that.payloadLength &&
+                flag == that.flag &&
+                Arrays.equals(checksum, that.checksum);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(seqNr, ackNr, flag, payloadLength);
+        result = 31 * result + Arrays.hashCode(checksum);
+        return result;
+    }
+
 
 }

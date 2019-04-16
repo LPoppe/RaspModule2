@@ -1,4 +1,4 @@
-package deskfileclient;
+package framework.application;
 
 // Your client should be able to show statistics about download speeds, packet loss, retransmissions, etc.
 
