@@ -47,16 +47,17 @@ public class RaspClient extends RaspReceiver {
     }
 
     @Override
-    protected void relayToHandler(RaspPacket raspPacket, RaspAddress packetOrigin) {
+    protected void relayToHandler(RaspPacket raspPacket, RaspAddress packetOrigin) throws InterruptedException {
         if (raspPacket != null) {
-            if (knownConnections.containsKey(packetOrigin)) {
+            if (knownConnections.containsKey(packetOrigin) && raspPacket.getHeader().getFlag() != ControlFlag.SYNACK) {
                 // Call responsible RaspSocket (should always be the server for clients).
                 knownConnections.get(packetOrigin).handlePacket(raspPacket);
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.SYNACK) {
                 try {
                     // Replace the broadcast address with a direct connection.
                     RaspAddress broadcastAddress = new RaspAddress(InetAddress.getLocalHost(), 8001);
-                    this.knownConnections.get(broadcastAddress).setAddress(broadcastAddress);
+                    this.knownConnections.get(broadcastAddress).setAddress(packetOrigin);
+                    this.knownConnections.get(packetOrigin).setConnectedToTrue();
                     socket.connect(broadcastAddress.getAddress(), broadcastAddress.getPort());
                 } catch (UnknownHostException e) {
                     e.printStackTrace();

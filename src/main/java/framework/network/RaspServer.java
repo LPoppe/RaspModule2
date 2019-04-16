@@ -22,7 +22,7 @@ public class RaspServer extends RaspReceiver {
     }
 
     @Override
-    protected void relayToHandler(RaspPacket raspPacket, RaspAddress packetOrigin) {
+    protected void relayToHandler(RaspPacket raspPacket, RaspAddress packetOrigin) throws InterruptedException {
         if (raspPacket != null) {
             if (knownConnections.containsKey(packetOrigin)) {
                 // Call responsible RaspSocket.
@@ -31,6 +31,8 @@ public class RaspServer extends RaspReceiver {
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.SYN) {
                 // Add client to known clients. Ignore unknown clients that do not send the proper control flag.
                 addConnection(packetOrigin.getAddress(), packetOrigin.getPort()).handlePacket(raspPacket);
+                this.knownConnections.get(packetOrigin).setConnectedToTrue();
+
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.FIN) {
                 // If the client finishes the connection, it is removed from the known addresses.
                 removeClient(packetOrigin);

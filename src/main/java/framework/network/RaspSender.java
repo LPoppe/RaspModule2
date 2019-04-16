@@ -3,7 +3,7 @@ package framework.network;
 import framework.transport.NoAckRaspPacket;
 import framework.transport.RaspAddress;
 import framework.transport.RaspPacket;
-import framework.slidingwindow.RaspSocket;
+import framework.transport.RaspSocket;
 import javafx.util.Pair;
 
 import java.io.IOException;

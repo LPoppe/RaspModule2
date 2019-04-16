@@ -2,7 +2,7 @@ package framework.network;
 
 import framework.InvalidChecksumException;
 import framework.transport.*;
-import framework.slidingwindow.RaspSocket;
+import framework.transport.RaspSocket;
 import java.io.IOException;
 import java.net.*;
 import java.util.HashMap;
@@ -66,12 +66,18 @@ public abstract class RaspReceiver extends Thread {
             RaspPacket raspPacket = null;
             try {
                 raspPacket = RaspPacket.deserialize(request);
+                System.out.println("Packet succesfully received.");
+                System.out.println(raspPacket.getHeader().getFlag());
             } catch (InvalidChecksumException e) {
                 System.err.println("Invalid Checksum: " + e.getMessage());
                 e.printStackTrace();
             }
 
-            relayToHandler(raspPacket, packetOrigin);
+            try {
+                relayToHandler(raspPacket, packetOrigin);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             // Check if any handlers need to resend packets.
             checkForTimeOuts();
@@ -98,7 +104,7 @@ public abstract class RaspReceiver extends Thread {
         this.join();
     }
 
-    protected abstract void relayToHandler(RaspPacket packet, RaspAddress packetOrigin);
+    protected abstract void relayToHandler(RaspPacket packet, RaspAddress packetOrigin) throws InterruptedException;
 
     protected void checkForTimeOuts() {
         long currentTime = System.currentTimeMillis();

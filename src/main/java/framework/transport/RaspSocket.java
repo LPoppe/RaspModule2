@@ -1,10 +1,8 @@
-package framework.slidingwindow;
+package framework.transport;
 
 import framework.network.RaspSender;
-import framework.transport.NoAckRaspPacket;
-import framework.transport.ControlFlag;
-import framework.transport.RaspAddress;
-import framework.transport.RaspPacket;
+import framework.slidingwindow.ReceiveWindow;
+import framework.slidingwindow.SendWindow;
 import javafx.util.Pair;
 
 import java.nio.ByteBuffer;
@@ -33,6 +31,7 @@ public class RaspSocket {
     private final Object readLock;
     private final Object writeLock;
     private ByteBuffer leftoverBytes;
+    private boolean isConnected = false;
 
     public RaspSocket(RaspSender sender, RaspAddress address, int maxRaspPacketSize) {
         this.address = address;
@@ -125,7 +124,7 @@ public class RaspSocket {
         }
     }
 
-    public void handlePacket(RaspPacket raspPacket) {
+    public void handlePacket(RaspPacket raspPacket) throws InterruptedException {
         // Reset the last time a packet was received to current time.
         setLastTimeReceived(System.currentTimeMillis());
 
@@ -200,5 +199,9 @@ public class RaspSocket {
     public void open() throws InterruptedException {
         NoAckRaspPacket synPacket = new NoAckRaspPacket(new byte[0], seqNr, SYN);
         offer(synPacket);
+    }
+
+    public void setConnectedToTrue() {
+        this.isConnected = true;
     }
 }
