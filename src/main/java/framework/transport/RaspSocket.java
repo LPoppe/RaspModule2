@@ -7,6 +7,7 @@ import javafx.util.Pair;
 
 import java.nio.ByteBuffer;
 
+import static framework.transport.ControlFlag.DATA;
 import static framework.transport.ControlFlag.SYN;
 
 public class RaspSocket {
@@ -70,8 +71,7 @@ public class RaspSocket {
             int lenToRead = Math.min(buffer.remaining(), maxPacketSize);
             byte[] packetArray = new byte[lenToRead];
             buffer.get(packetArray);
-            NoAckRaspPacket packet = new NoAckRaspPacket(packetArray, seqNr, ControlFlag.DATA);
-            this.offer(packet);
+            DATA.sendWithFlag(this, packetArray);
 
             // send the rest.
             write(buffer);
