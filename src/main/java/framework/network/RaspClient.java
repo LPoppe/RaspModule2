@@ -1,14 +1,11 @@
 package framework.network;
 
-import framework.transport.NoAckRaspPacket;
 import framework.transport.ControlFlag;
 import framework.transport.RaspAddress;
 import framework.transport.RaspPacket;
 
 import java.io.IOException;
 import java.net.*;
-
-import static framework.transport.ControlFlag.SYN;
 
 public class RaspClient extends RaspReceiver {
 
@@ -57,7 +54,7 @@ public class RaspClient extends RaspReceiver {
                     // Replace the broadcast address with a direct connection.
                     RaspAddress broadcastAddress = new RaspAddress(InetAddress.getLocalHost(), 8001);
                     this.knownConnections.get(broadcastAddress).setAddress(packetOrigin);
-                    this.knownConnections.get(packetOrigin).setConnectedToTrue();
+                    this.knownConnections.get(packetOrigin).setIsConnected(true);
                     socket.connect(broadcastAddress.getAddress(), broadcastAddress.getPort());
                 } catch (UnknownHostException e) {
                     e.printStackTrace();

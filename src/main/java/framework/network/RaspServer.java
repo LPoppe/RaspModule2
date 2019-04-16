@@ -31,7 +31,7 @@ public class RaspServer extends RaspReceiver {
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.SYN) {
                 // Add client to known clients. Ignore unknown clients that do not send the proper control flag.
                 addConnection(packetOrigin.getAddress(), packetOrigin.getPort()).handlePacket(raspPacket);
-                this.knownConnections.get(packetOrigin).setConnectedToTrue();
+                this.knownConnections.get(packetOrigin).setIsConnected(true);
 
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.FIN) {
                 // If the client finishes the connection, it is removed from the known addresses.

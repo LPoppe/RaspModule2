@@ -121,7 +121,7 @@ public abstract class RaspReceiver extends Thread {
     protected RaspSocket addConnection(InetAddress address, Integer port) {
         RaspAddress clientAddress = new RaspAddress(address, port);
 
-        RaspSocket connection = new RaspSocket(this.senderThread, clientAddress, MAX_RASP_PACKET_SIZE);
+        RaspSocket connection = new RaspSocket(this, this.senderThread, clientAddress, MAX_RASP_PACKET_SIZE);
         this.knownConnections.put(clientAddress, connection);
         return connection;
     }

@@ -1,5 +1,7 @@
 package framework.transport;
 
+import framework.application.ApplicationHandler;
+import framework.network.RaspReceiver;
 import framework.network.RaspSender;
 import framework.slidingwindow.ReceiveWindow;
 import framework.slidingwindow.SendWindow;
@@ -12,10 +14,11 @@ import static framework.transport.ControlFlag.SYN;
 
 public class RaspSocket {
 
-
     // The address this handler needs to handle communication with.
     private RaspAddress address;
     private final RaspSender raspSender;
+    private final RaspReceiver raspReceiver;
+    private final ApplicationHandler application;
     private final int maxPacketSize;
 
 
@@ -34,9 +37,12 @@ public class RaspSocket {
     private ByteBuffer leftoverBytes;
     private boolean isConnected = false;
 
-    public RaspSocket(RaspSender sender, RaspAddress address, int maxRaspPacketSize) {
+    public RaspSocket(RaspReceiver receiver, RaspSender sender, RaspAddress address, int maxRaspPacketSize) {
         this.address = address;
         this.raspSender = sender;
+        this.raspReceiver = receiver;
+        this.application = new ApplicationHandler(this);
+
         this.maxPacketSize = maxRaspPacketSize;
 
         this.receiveWindow = new ReceiveWindow(10);
@@ -201,7 +207,15 @@ public class RaspSocket {
         offer(synPacket);
     }
 
-    public void setConnectedToTrue() {
-        this.isConnected = true;
+    public void setIsConnected(boolean isConnected) {
+        this.isConnected = isConnected;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public RaspReceiver getRaspReceiver() {
+        return raspReceiver;
     }
 }
