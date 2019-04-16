@@ -1,6 +1,6 @@
 package framework.slidingwindow;
 
-import framework.rasphandling.NoAckRaspPacket;
+import framework.transport.NoAckRaspPacket;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -8,14 +8,16 @@ public abstract class Window {
     protected final int size;
     protected int lowestSeq = 0;
     protected int offset = 0;
-    protected NoAckRaspPacket[] window;
+    protected final NoAckRaspPacket[] window;
 
     // Couldn't find the appropriate lock. This works.
     private final Object lockToken = new Object();
-    protected ArrayBlockingQueue<Object> offerNotifier;
+    protected final ArrayBlockingQueue<Object> offerNotifier;
 
     public Window(int windowSize) {
         this.size = windowSize;
+        this.window = new NoAckRaspPacket[windowSize];
+        this.offerNotifier = new ArrayBlockingQueue<>(1);
     }
 
     protected NoAckRaspPacket getBySeqNr(int seqNr) {

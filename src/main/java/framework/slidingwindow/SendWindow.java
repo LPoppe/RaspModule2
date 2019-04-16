@@ -1,6 +1,6 @@
 package framework.slidingwindow;
 
-import framework.rasphandling.NoAckRaspPacket;
+import framework.transport.NoAckRaspPacket;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -12,11 +12,8 @@ public class SendWindow extends Window {
     private final Object lockToken = new Object();
     private ArrayBlockingQueue<Object> freeSpaceNotifier;
 
-    protected NoAckRaspPacket[] window;
-
     public SendWindow(int windowSize) {
         super(windowSize);
-        this.window = new NoAckRaspPacket[windowSize];
         this.freeSpaceNotifier = new ArrayBlockingQueue<>(1);
     }
 

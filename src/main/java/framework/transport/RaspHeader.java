@@ -1,53 +1,13 @@
-package framework.rasphandling;
+package framework.transport;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.zip.CRC32;
 
-public class RaspHeader {
+public class RaspHeader extends NoAckRaspHeader{
 
-    private int seqNr;
+    // The NoAckRaspHeader does not yet have an ackNr or checksum.
     private int ackNr;
-    private ControlFlag flag;
-    private int payloadLength;
     private byte[] checksum;
-
-    public enum HeaderField {
-
-        // Fields of the header have their location and length assigned to them here.
-        // Mind that the header length is based the location and length of CHECKSUM.
-        SEQ_NR(0, 4),
-        ACK_NR(4,4),
-        FLAG(8, 1),
-        CON_LEN(9, 4),
-        CHECKSUM(13, 4);
-
-        private final int loc;
-        private final int length;
-
-        HeaderField(int loc, int length) {
-            this.loc = loc;
-            this.length = length;
-        }
-
-        public int getFieldLoc() {
-            return loc;
-        }
-        public int getFieldLength() {
-            return length;
-        }
-
-    }
-
-    /**
-     * Creates a new header for a NoAckRaspPacket.
-     */
-    public RaspHeader(int seqNumber, byte[] payload, ControlFlag controlFlag) {
-        this.seqNr = seqNumber;
-        this.payloadLength = payload.length;
-        this.flag = controlFlag;
-    }
 
     /**
      * Reads the information from a received packet into a new header.
@@ -67,7 +27,13 @@ public class RaspHeader {
         }
     }
 
-    public byte[] getHeader() {
+    public RaspHeader(NoAckRaspHeader noAck, int ackNr, byte[] payload) {
+        super(noAck);
+        this.ackNr = ackNr;
+        this.checksum = createChecksum(payload);
+    }
+
+    public byte[] serialize() {
 
         ByteBuffer fieldBuf = ByteBuffer.allocate(getLength());
 
@@ -110,53 +76,12 @@ public class RaspHeader {
         return result;
     }
 
-    public static int getLength() {
-        // Assumes CHECKSUM is the last field in the header!
-        return HeaderField.CHECKSUM.getFieldLoc() + HeaderField.CHECKSUM.getFieldLength();
-    }
-
-    public int getSeqNr() {
-        return this.seqNr;
-    }
 
     public int getAckNr() {
         return this.ackNr;
     }
-
-    // The AckNr is only set upon retrieving the data for sending to avoid creating deadlocks.
-    public void setAckNr(int ackNr) {
-        this.ackNr = ackNr;
-    }
-
-    public ControlFlag getFlag() {
-        return this.flag;
-    }
-
-    public int getPayloadLength() {
-        return this.payloadLength;
-    }
-
     public byte[] getChecksum() {
         return this.checksum;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RaspHeader that = (RaspHeader) o;
-        return seqNr == that.seqNr &&
-                ackNr == that.ackNr &&
-                payloadLength == that.payloadLength &&
-                flag == that.flag &&
-                Arrays.equals(checksum, that.checksum);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(seqNr, ackNr, flag, payloadLength);
-        result = 31 * result + Arrays.hashCode(checksum);
-        return result;
     }
 
 

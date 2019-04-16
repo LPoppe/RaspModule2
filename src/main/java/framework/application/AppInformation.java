@@ -1,6 +1,6 @@
 package framework.application;
 
-import framework.rasphandling.RaspHeader;
+import framework.transport.RaspHeader;
 
 import java.nio.ByteBuffer;
 

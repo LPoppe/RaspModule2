@@ -1,4 +1,4 @@
-package framework.rasphandling;
+package framework.transport;
 
 import framework.InvalidChecksumException;
 
@@ -9,30 +9,24 @@ import java.util.Arrays;
 public class RaspPacket extends NoAckRaspPacket {
 
     /**
-     * Construct a RaspPacket (through NoAckRaspPacket.toRaspPacket()).
+     * Construct a RaspPacket.
      */
-    public RaspPacket(byte[] payload, RaspHeader header, int ackNr) {
-        super(payload, header);
-        header.setAckNr(ackNr);
-        createChecksum();
-    }
-
-    /**
-     * Construct a RaspPacket (through deserialize()).
-     */
-    public RaspPacket(byte[] payload, RaspHeader header) {
-        super(payload, header);
+    public RaspPacket(byte[] payload, RaspHeader newHeader) {
+        super(payload, newHeader);
     }
 
     public byte[] serialize() {
         // Content = header + payload.
         byte[] content = new byte[RaspHeader.getLength() + this.payload.length];
-        byte[] headerFields = this.getHeader().getHeader();
+        byte[] headerFields = this.getHeader().serialize();
         System.arraycopy(headerFields, 0, content, 0, RaspHeader.getLength());
         System.arraycopy(this.payload, 0, content, RaspHeader.getLength(), this.payload.length);
         return content;
     }
 
+    private byte[] createChecksum() {
+        return this.getHeader().createChecksum(this.getPayload());
+    }
 
     public static RaspPacket deserialize(DatagramPacket request) throws InvalidChecksumException {
         byte[] payload = Arrays.copyOfRange(request.getData(), RaspHeader.getLength(), request.getLength());
@@ -49,4 +43,9 @@ public class RaspPacket extends NoAckRaspPacket {
             throw new InvalidChecksumException();
         }
     }
+
+    public RaspHeader getHeader() {
+        return (RaspHeader) this.header;
+    }
+
 }

@@ -1,6 +1,6 @@
 package framework.network;
 
-import framework.rasphandling.*;
+import framework.transport.*;
 
 public class RaspServer extends RaspReceiver {
 
@@ -15,10 +15,10 @@ public class RaspServer extends RaspReceiver {
     }
 
     @Override
-    protected void discoverServer() {
+    protected void establishConnection() {
         // With the current flow, the client initiates communication,
         // and the server handles the initial messages in relayToHandler().
-        // it does not need to do anything in discoverServer().
+        // it does not need to do anything in establishConnection().
     }
 
     @Override

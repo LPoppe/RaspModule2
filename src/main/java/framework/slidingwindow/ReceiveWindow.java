@@ -1,17 +1,14 @@
 package framework.slidingwindow;
 
-import framework.rasphandling.RaspPacket;
+import framework.transport.NoAckRaspPacket;
 
 public class ReceiveWindow extends Window {
 
-    private RaspPacket[] window;
-
     public ReceiveWindow(int windowSize) {
         super(windowSize);
-        this.window = new RaspPacket[windowSize];
     }
 
-    public synchronized RaspPacket getNext() throws InterruptedException {
+    public synchronized byte[] getNext() throws InterruptedException {
         while(true) {
             offerNotifier.take();
             if (hasNext()) {
@@ -27,7 +24,7 @@ public class ReceiveWindow extends Window {
             highestSeq = Integer.MAX_VALUE;
         }
 
-        for (RaspPacket packet : window) {
+        for (NoAckRaspPacket packet : window) {
             if (packet == null) {
                 break;
             } else {
@@ -37,15 +34,15 @@ public class ReceiveWindow extends Window {
         return highestSeq;
     }
 
-    protected RaspPacket pop() {
-        RaspPacket packet = getByIndex(0);
+    protected byte[] pop() {
+        NoAckRaspPacket packet = getByIndex(0);
         setByIndex(0, null);
         lowestSeq++;
         offset = offset + 1 % 5;
-        return packet;
+        return packet.getPayload();
     }
 
-    protected RaspPacket getByIndex(int i) {
+    protected NoAckRaspPacket getByIndex(int i) {
         if (i >= size) {
             // TODO: ERROR MESSAGE.
             throw new IndexOutOfBoundsException("");

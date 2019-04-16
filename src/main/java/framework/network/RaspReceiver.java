@@ -1,7 +1,7 @@
 package framework.network;
 
 import framework.InvalidChecksumException;
-import framework.rasphandling.*;
+import framework.transport.*;
 import framework.slidingwindow.RaspSocket;
 import java.io.IOException;
 import java.net.*;
@@ -42,7 +42,7 @@ public abstract class RaspReceiver extends Thread {
 
     public void run() {
 
-        discoverServer();
+        establishConnection();
 
         while (this.running) {
 
@@ -79,7 +79,7 @@ public abstract class RaspReceiver extends Thread {
     }
 
     // Only used by client to establish a first connection, as the client initiates the communication.
-    protected abstract void discoverServer();
+    protected abstract void establishConnection();
 
     @Override
     public synchronized void start() {

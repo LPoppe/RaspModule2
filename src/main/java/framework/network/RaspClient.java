@@ -1,15 +1,14 @@
 package framework.network;
 
-import framework.rasphandling.NoAckRaspPacket;
-import framework.rasphandling.ControlFlag;
-import framework.rasphandling.RaspAddress;
-import framework.rasphandling.RaspPacket;
-import javafx.util.Pair;
+import framework.transport.NoAckRaspPacket;
+import framework.transport.ControlFlag;
+import framework.transport.RaspAddress;
+import framework.transport.RaspPacket;
 
 import java.io.IOException;
 import java.net.*;
 
-import static framework.rasphandling.ControlFlag.SYN;
+import static framework.transport.ControlFlag.SYN;
 
 public class RaspClient extends RaspReceiver {
 
@@ -28,40 +27,22 @@ public class RaspClient extends RaspReceiver {
     }
 
     @Override
-    protected void discoverServer() {
+    protected void establishConnection() {
         try {
             socket.setBroadcast(true);
-            // Server port should always be 8001.
+            // Server listens on port 8001.
             RaspAddress broadcastAddress = new RaspAddress(InetAddress.getLocalHost(), 8001);
+            addConnection(broadcastAddress.getAddress(), broadcastAddress.getPort());
+            // Tell the RaspSocket to send a SYN.
+            System.out.println(this.knownConnections.get(broadcastAddress));
+            this.knownConnections.get(broadcastAddress).open();
 
-            int maxRetries = 5;
-            for (int i = 0; i < maxRetries; i++) {
-                System.out.println("Sending discover message.");
-
-                DatagramPacket probe = new DatagramPacket(new byte[0], 0, InetAddress.getLocalHost(), 8001);
-                socket.send(probe);
-
-                // Receive buffer set to the maximum size a packet may have.
-                byte[] receiveBuffer = new byte[1000];
-                DatagramPacket response = new DatagramPacket(receiveBuffer, receiveBuffer.length);
-
-                socket.receive(response);
-
-                // Once successful, escape the loop.
-                addConnection(response.getAddress(), response.getPort());
-                // No longer accept other addresses.
-                socket.connect(response.getAddress(), response.getPort());
-                break;
-            }
-
-        } catch (SocketTimeoutException e) {
-            System.out.println("No response.");
-        } catch (UnknownHostException ex) {
-            System.err.println("Host unknown: " + ex.getMessage());
-            ex.printStackTrace();
         } catch (IOException ex) {
             System.err.println("I/O error: " + ex.getMessage());
             ex.printStackTrace();
+        } catch (InterruptedException e) {
+            System.err.println("Interrupted while establishing connection to server. " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -72,8 +53,15 @@ public class RaspClient extends RaspReceiver {
                 // Call responsible RaspSocket (should always be the server for clients).
                 knownConnections.get(packetOrigin).handlePacket(raspPacket);
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.SYNACK) {
-                // Connect to the server if it has not yet done so.
-                addConnection(packetOrigin.getAddress(), packetOrigin.getPort()).handlePacket(raspPacket);
+                try {
+                    // Replace the broadcast address with a direct connection.
+                    RaspAddress broadcastAddress = new RaspAddress(InetAddress.getLocalHost(), 8001);
+                    this.knownConnections.get(broadcastAddress).setAddress(broadcastAddress);
+                    socket.connect(broadcastAddress.getAddress(), broadcastAddress.getPort());
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+
                 // From now on, only accept messages from this server.
                 socket.connect(packetOrigin.getAddress(), packetOrigin.getPort());
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.FIN) {

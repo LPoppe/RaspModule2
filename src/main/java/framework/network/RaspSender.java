@@ -1,8 +1,8 @@
 package framework.network;
 
-import framework.rasphandling.NoAckRaspPacket;
-import framework.rasphandling.RaspAddress;
-import framework.rasphandling.RaspPacket;
+import framework.transport.NoAckRaspPacket;
+import framework.transport.RaspAddress;
+import framework.transport.RaspPacket;
 import framework.slidingwindow.RaspSocket;
 import javafx.util.Pair;
 

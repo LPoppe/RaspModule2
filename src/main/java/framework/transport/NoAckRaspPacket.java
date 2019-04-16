@@ -1,4 +1,4 @@
-package framework.rasphandling;
+package framework.transport;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -6,35 +6,32 @@ import java.util.Objects;
 public class NoAckRaspPacket {
 
     protected byte[] payload;
-    protected RaspHeader header;
+    NoAckRaspHeader header;
 
     /**
      * Construct a NoAckRaspPacket for sending.
      */
     public NoAckRaspPacket(byte[] payload, int seqNumber, ControlFlag controlFlag) {
         this.payload = payload;
-        this.header = new RaspHeader(seqNumber, payload, controlFlag);
+        this.header = new NoAckRaspHeader(seqNumber, payload, controlFlag);
     }
 
-    public NoAckRaspPacket(byte[] payload, RaspHeader header) {
+    public NoAckRaspPacket(byte[] payload, NoAckRaspHeader header) {
         this.payload = payload;
         this.header = header;
     }
 
 
     public RaspPacket toRaspPacket(int ackNr) {
-        return new RaspPacket(this.payload, this.header, ackNr);
-    }
-
-    protected byte[] createChecksum() {
-        return this.getHeader().createChecksum(this.getPayload());
+        RaspHeader newHeader = header.toRaspHeader(ackNr, payload);
+        return new RaspPacket(this.payload, newHeader);
     }
 
     public byte[] getPayload() {
         return this.payload;
     }
 
-    public RaspHeader getHeader() {
+    public NoAckRaspHeader getHeader() {
         return this.header;
     }
 

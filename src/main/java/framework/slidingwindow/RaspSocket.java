@@ -1,19 +1,21 @@
 package framework.slidingwindow;
 
 import framework.network.RaspSender;
-import framework.rasphandling.NoAckRaspPacket;
-import framework.rasphandling.ControlFlag;
-import framework.rasphandling.RaspAddress;
-import framework.rasphandling.RaspPacket;
+import framework.transport.NoAckRaspPacket;
+import framework.transport.ControlFlag;
+import framework.transport.RaspAddress;
+import framework.transport.RaspPacket;
 import javafx.util.Pair;
 
 import java.nio.ByteBuffer;
+
+import static framework.transport.ControlFlag.SYN;
 
 public class RaspSocket {
 
 
     // The address this handler needs to handle communication with.
-    private final RaspAddress address;
+    private RaspAddress address;
     private final RaspSender raspSender;
     private final int maxPacketSize;
 
@@ -70,8 +72,7 @@ public class RaspSocket {
             byte[] packetArray = new byte[lenToRead];
             buffer.get(packetArray);
             NoAckRaspPacket packet = new NoAckRaspPacket(packetArray, seqNr, ControlFlag.DATA);
-            increaseSeqNr();
-            this.sendWindow.offer(packet);
+            this.offer(packet);
 
             // send the rest.
             write(buffer);
@@ -101,14 +102,12 @@ public class RaspSocket {
 
         } else {
             // If there were no remaining bytes, get the next packet (blocks until a packet is available).
-            NoAckRaspPacket packet = receiveWindow.getNext();
-            byte[] payload = packet.getPayload();
-            int payloadLength = packet.getPayload().length;
-            int bytesToFill = Math.min(payloadLength, readBuffer.limit());
+            byte[] payload = receiveWindow.getNext();
+            int bytesToFill = Math.min(payload.length, readBuffer.limit());
             readBuffer.put(payload, 0, bytesToFill);
 
             // Fill a byte buffer with the remaining bytes from the payload if it is not fully read.
-            int leftovers = payloadLength - bytesToFill;
+            int leftovers = payload.length - bytesToFill;
             leftoverBytes = ByteBuffer.allocate(leftovers);
             leftoverBytes.put(payload, bytesToFill, leftovers);
         }
@@ -121,6 +120,9 @@ public class RaspSocket {
      */
     public void resend() {
         sendWindow.resetOffset();
+        while (this.sendWindow.hasNext()) {
+            send(this.sendWindow.getNext());
+        }
     }
 
     public void handlePacket(RaspPacket raspPacket) {
@@ -130,12 +132,17 @@ public class RaspSocket {
         raspPacket.getHeader().getFlag().respondToFlag(this, raspPacket);
     }
 
-    public void offer(NoAckRaspPacket packet) throws InterruptedException {
-        while (this.sendWindow.hasNext()) {
-            raspSender.getSendQueue().add(new Pair<>(this.address, this.sendWindow.getNext()));
+    protected synchronized void offer(NoAckRaspPacket packet) throws InterruptedException {
+        if (packet.getHeader().getSeqNr() != this.seqNr) {
+            throw new RuntimeException("Wrong sequence number. I dun goofed.");
         }
+        sendWindow.offer(packet);
+        increaseSeqNr();
+        send(packet);
+    }
 
-        offer(packet);
+    private void send(NoAckRaspPacket packet) {
+        raspSender.getSendQueue().add(new Pair<>(this.address, packet));
     }
 
     public void increaseSeqNr() {
@@ -184,5 +191,14 @@ public class RaspSocket {
 
     public RaspAddress getAddress() {
         return address;
+    }
+
+    public void setAddress(RaspAddress address) {
+        this.address = address;
+    }
+
+    public void open() throws InterruptedException {
+        NoAckRaspPacket synPacket = new NoAckRaspPacket(new byte[0], seqNr, SYN);
+        offer(synPacket);
     }
 }
