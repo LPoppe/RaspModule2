@@ -1,8 +1,7 @@
 package framework.application;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.BufferedInputStream;
+import java.io.*;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
@@ -12,14 +11,16 @@ public class FileUpload {
     private boolean isDone;
     private Integer fileIdentifier;
     private int segmentCounter;
+    private String fileName;
     private ApplicationHandler applicationHandler;
+    private FileInputStream inputStream;
 
-    private BufferedInputStream fileStream;
 
-    public FileUpload(ApplicationHandler applicationHandler) {
+    public FileUpload(ApplicationHandler applicationHandler, String filename) {
         this.isPaused = false;
         this.isDone = false;
         this.applicationHandler = applicationHandler;
+        this.fileName = filename;
         this.fileIdentifier = getRandomNotInUse(1, 50000);
         this.segmentCounter = 0;
     }
@@ -28,18 +29,16 @@ public class FileUpload {
 
     }
 
-    public byte[] getNextFileSegment(String fileName) {
-        byte[] nextSegment = null;
+    public byte[] getNextFileSegment() throws InterruptedException {
         try {
-            nextSegment = Files.readAllBytes(Paths.get(fileName));
+            File file = new File(fileName);
+            byte[] bytesArray = new byte[(int) file.length()];
+            this.inputStream = new FileInputStream(file);
+            return bytesArray;
         } catch (FileNotFoundException fe) {
-            System.err.println("File requested not found: " + fe.getMessage());
-            //TODO: Send some response notifying the user/client file does not exist. Not here. But somewhere?
-        } catch (IOException e) {
-            System.err.println("I/O error: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("File not found: " + fe.getMessage());
         }
-        return nextSegment;
+        return null;
     }
 
     public int getFileIdentifier() {

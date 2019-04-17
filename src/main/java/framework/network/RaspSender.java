@@ -9,6 +9,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -37,9 +38,8 @@ public class RaspSender extends Thread {
                 if (toSend != null) {
                     RaspAddress address = toSend.getKey();
                     RaspSocket raspSocket = knownClients.get(address);
-
                     RaspPacket raspPacket = toSend.getValue().toRaspPacket(raspSocket.getAckNr());
-
+                    System.out.printf("Sending packet with: Seq: %d, Ack: %d, Checksum: %s%n", raspPacket.getHeader().getSeqNr(), raspPacket.getHeader().getAckNr(), Arrays.toString(raspPacket.getHeader().getChecksum()));
                     byte[] raspPacketContent = raspPacket.serialize();
                     DatagramPacket udpPacket = new DatagramPacket(raspPacketContent, raspPacketContent.length,
                             address.getAddress(), address.getPort());

@@ -5,10 +5,10 @@ public enum ControlFlag {
     SYN(0) {
         @Override
         public void respondToFlag(RaspSocket raspSocket, RaspPacket packet) throws InterruptedException {
-            raspSocket.setAckNr(packet);
             // Only the server should ever receive a SYN. Clients should ignore it.
             // Server responds to client by sending a SYNACK to provide its address and port.
             SYNACK.sendWithFlag(raspSocket, new byte[0]);
+            raspSocket.moveWindows(packet);
         }
 
         @Override
@@ -18,8 +18,8 @@ public enum ControlFlag {
 
     }, ACK(1) {
         @Override
-        public void respondToFlag(RaspSocket raspSocket, RaspPacket packet) {
-            raspSocket.setAckNr(packet);
+        public void respondToFlag(RaspSocket raspSocket, RaspPacket packet) throws InterruptedException {
+            raspSocket.moveWindows(packet);
         }
 
         @Override
@@ -29,8 +29,8 @@ public enum ControlFlag {
         }
     }, SYNACK(2) {
         @Override
-        public void respondToFlag(RaspSocket raspSocket, RaspPacket packet) {
-            raspSocket.setAckNr(packet);
+        public void respondToFlag(RaspSocket raspSocket, RaspPacket packet) throws InterruptedException {
+            raspSocket.moveWindows(packet);
             // Only the client should ever receive a SYNACK. This is handled directly in the receiver class.
             // After a SYNACK it is OK to send data.
         }
@@ -43,7 +43,7 @@ public enum ControlFlag {
     }, DATA(3) {
         @Override
         public void respondToFlag(RaspSocket raspSocket, RaspPacket packet) throws InterruptedException {
-            raspSocket.setAckNr(packet);
+            raspSocket.moveWindows(packet);
             if (!raspSocket.getSendWindow().hasNext()) {
                 ACK.sendWithFlag(raspSocket, new byte[0]);
             }

@@ -1,6 +1,8 @@
 package framework.transport;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.zip.CRC32;
 
 public class RaspHeader extends NoAckRaspHeader{
@@ -62,7 +64,11 @@ public class RaspHeader extends NoAckRaspHeader{
         checksum.update(this.ackNr);
         checksum.update(this.flag.getFlag());
         checksum.update(this.payloadLength);
-        checksum.update(payload);
+        for (byte pb : payload) {
+            checksum.update(pb);
+            System.out.println("byte " + pb + ": " + checksum.getValue());
+        }
+        System.out.println("Checksum value = " + checksum.getValue());
         return longToBytes(checksum.getValue());
     }
 
@@ -73,6 +79,7 @@ public class RaspHeader extends NoAckRaspHeader{
         result[2] = (byte) (checkValue >>> 8);
         result[1] = (byte) (checkValue >>> 16);
         result[0] = (byte) (checkValue >>> 24);
+        System.out.println("Checkvalue: " + checkValue + ", Array: " + Arrays.toString(result));
         return result;
     }
 
@@ -82,6 +89,24 @@ public class RaspHeader extends NoAckRaspHeader{
     }
     public byte[] getChecksum() {
         return this.checksum;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RaspHeader that = (RaspHeader) o;
+        return ackNr == that.ackNr &&
+                Arrays.equals(checksum, that.checksum);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(super.hashCode(), ackNr);
+        result = 31 * result + Arrays.hashCode(checksum);
+        return result;
     }
 
 

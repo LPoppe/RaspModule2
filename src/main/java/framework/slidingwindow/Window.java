@@ -33,10 +33,8 @@ public abstract class Window {
     }
 
     protected int getInternalIndex(int i) {
-        return offset + i % size;
+        return (offset + i) % size;
     }
-
-
 
     public boolean hasNext() {
         return window[getInternalIndex(0)] != null;

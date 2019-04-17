@@ -3,11 +3,13 @@ package framework.transport;
 import framework.application.ApplicationHandler;
 import framework.network.RaspReceiver;
 import framework.network.RaspSender;
+import framework.network.RaspServer;
 import framework.slidingwindow.ReceiveWindow;
 import framework.slidingwindow.SendWindow;
 import javafx.util.Pair;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import static framework.transport.ControlFlag.DATA;
 import static framework.transport.ControlFlag.SYN;
@@ -35,12 +37,13 @@ public class RaspSocket {
     private final Object readLock;
     private final Object writeLock;
     private ByteBuffer leftoverBytes;
-    private boolean isConnected = false;
+    private boolean isConnected;
 
     public RaspSocket(RaspReceiver receiver, RaspSender sender, RaspAddress address, int maxRaspPacketSize) {
         this.address = address;
         this.raspSender = sender;
         this.raspReceiver = receiver;
+        this.isConnected = false;
         this.application = new ApplicationHandler(this);
 
         this.maxPacketSize = maxRaspPacketSize;
@@ -125,9 +128,7 @@ public class RaspSocket {
      */
     public void resend() {
         sendWindow.resetOffset();
-        while (this.sendWindow.hasNext()) {
-            send(this.sendWindow.getNext());
-        }
+        send(this.sendWindow.getNext());
     }
 
     public void handlePacket(RaspPacket raspPacket) throws InterruptedException {
@@ -157,13 +158,25 @@ public class RaspSocket {
     /**
      * Set the ack number (last seq nr. received).
      * Ignore the ack number if higher seq nr. has already arrived.
+     * //TODO: Does not wrap around.
      */
-    public void setAckNr(NoAckRaspPacket packet) {
-        //TODO: Does not wrap around.
-        int packetAck = packet.getHeader().getSeqNr();
-        if (packetAck > this.ackNr) {
-            this.ackNr = packetAck;
+    public synchronized void moveWindows(RaspPacket packet) throws InterruptedException {
+        // Handle received ack
+        if (packet.getHeader().getFlag() != SYN) {
+            this.sendWindow.ackPacket(packet.getHeader().getAckNr());
         }
+        // Determine value of current ack.
+        int packetSeqNr = packet.getHeader().getSeqNr();
+        if (packetSeqNr == receiveWindow.getCurrentAck()) {
+            this.ackNr = packetSeqNr;
+            System.out.println("packet seq nr is equal to :" + packetSeqNr + ". new acknr: " + receiveWindow.getCurrentAck());
+        }
+        sendWindow.offer(packet);
+
+    }
+
+    public boolean allSent() {
+        return false;
     }
 
     public int getSeqNr() {
@@ -207,8 +220,9 @@ public class RaspSocket {
         offer(synPacket);
     }
 
-    public void setIsConnected(boolean isConnected) {
+    public void setIsConnected(boolean isConnected) throws InterruptedException {
         this.isConnected = isConnected;
+        this.application.createUploader();
     }
 
     public boolean isConnected() {

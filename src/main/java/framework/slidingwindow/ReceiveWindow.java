@@ -44,8 +44,7 @@ public class ReceiveWindow extends Window {
 
     protected NoAckRaspPacket getByIndex(int i) {
         if (i >= size) {
-            // TODO: ERROR MESSAGE.
-            throw new IndexOutOfBoundsException("");
+            throw new IndexOutOfBoundsException("Attempt at getting index outside of receive window bounds.");
         }
 
         return window[getInternalIndex(i)];

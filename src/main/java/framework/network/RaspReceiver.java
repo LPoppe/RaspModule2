@@ -5,6 +5,7 @@ import framework.transport.*;
 import framework.transport.RaspSocket;
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class RaspReceiver extends Thread {
@@ -63,20 +64,14 @@ public abstract class RaspReceiver extends Thread {
             RaspAddress packetOrigin = new RaspAddress(request.getAddress(), request.getPort());
 
             // Deserialize. Only creates packet if checksum succeeds.
-            RaspPacket raspPacket = null;
             try {
-                raspPacket = RaspPacket.deserialize(request);
-                System.out.println("Packet succesfully received.");
-                System.out.println(raspPacket.getHeader().getFlag());
-            } catch (InvalidChecksumException e) {
-                System.err.println("Invalid Checksum: " + e.getMessage());
-                e.printStackTrace();
-            }
-
-            try {
-                relayToHandler(raspPacket, packetOrigin);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                RaspPacket raspPacket = RaspPacket.deserialize(request);
+                try {
+                    relayToHandler(raspPacket, packetOrigin);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } catch (InvalidChecksumException ignored) {
             }
 
             // Check if any handlers need to resend packets.
@@ -109,8 +104,9 @@ public abstract class RaspReceiver extends Thread {
     protected void checkForTimeOuts() {
         long currentTime = System.currentTimeMillis();
         for (RaspSocket raspSocket : knownConnections.values()) {
-            long timeElapsed = raspSocket.getLastTimeReceived() - currentTime;
+            long timeElapsed = currentTime - raspSocket.getLastTimeReceived();
             if (timeElapsed >= RESEND_TIMEOUT) {
+                System.out.println("RESENDING");
                 raspSocket.resend();
             }
         }
