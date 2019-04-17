@@ -34,9 +34,12 @@ public class FileUpload {
             File file = new File(fileName);
             byte[] bytesArray = new byte[(int) file.length()];
             this.inputStream = new FileInputStream(file);
+            inputStream.read(bytesArray);
             return bytesArray;
         } catch (FileNotFoundException fe) {
             System.err.println("File not found: " + fe.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }

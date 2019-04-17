@@ -59,16 +59,13 @@ public class RaspHeader extends NoAckRaspHeader{
      * @return the checksum value (a long).
      */
     byte[] createChecksum(byte[] payload) {
+        System.out.println("In checksum: " + Arrays.toString(payload));
         CRC32 checksum = new CRC32();
         checksum.update(this.seqNr);
         checksum.update(this.ackNr);
         checksum.update(this.flag.getFlag());
         checksum.update(this.payloadLength);
-        for (byte pb : payload) {
-            checksum.update(pb);
-            System.out.println("byte " + pb + ": " + checksum.getValue());
-        }
-        System.out.println("Checksum value = " + checksum.getValue());
+        checksum.update(payload);
         return longToBytes(checksum.getValue());
     }
 
@@ -79,7 +76,6 @@ public class RaspHeader extends NoAckRaspHeader{
         result[2] = (byte) (checkValue >>> 8);
         result[1] = (byte) (checkValue >>> 16);
         result[0] = (byte) (checkValue >>> 24);
-        System.out.println("Checkvalue: " + checkValue + ", Array: " + Arrays.toString(result));
         return result;
     }
 

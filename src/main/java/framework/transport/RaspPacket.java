@@ -32,15 +32,15 @@ public class RaspPacket extends NoAckRaspPacket {
         byte[] payload = Arrays.copyOfRange(request.getData(), RaspHeader.getLength(), request.getLength());
         ByteBuffer bufferedRaspHeader = ByteBuffer.wrap(request.getData(), 0,
                 request.getLength() - payload.length);
-        System.out.println("Creating new header");
         RaspHeader header = new RaspHeader(bufferedRaspHeader);
         RaspPacket raspPacket = new RaspPacket(payload, header);
-        System.out.println("Recalculating checksum");
         byte[] expectedChecksum = raspPacket.createChecksum();
-        System.out.println(header.flag + " received: " + Arrays.toString(header.getChecksum()) + " expected: " + Arrays.toString(expectedChecksum));
         if (Arrays.equals(expectedChecksum, header.getChecksum())) {
             return raspPacket;
         } else {
+            System.out.println(header.flag + " received: " + Arrays.toString(header.getChecksum()) + " expected: " + Arrays.toString(expectedChecksum));
+            System.out.println(Arrays.toString(payload));
+            System.out.println(Arrays.toString(raspPacket.getPayload()));
             throw new InvalidChecksumException();
         }
     }
