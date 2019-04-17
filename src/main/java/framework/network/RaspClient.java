@@ -55,7 +55,8 @@ public class RaspClient extends RaspReceiver {
                     RaspAddress broadcastAddress = new RaspAddress(InetAddress.getLocalHost(), 8001);
                     this.knownConnections.get(broadcastAddress).setAddress(packetOrigin);
                     this.knownConnections.get(packetOrigin).setIsConnected(true);
-                    socket.connect(broadcastAddress.getAddress(), broadcastAddress.getPort());
+                    socket.connect(packetOrigin.getAddress(), packetOrigin.getPort());
+                    this.knownConnections.get(packetOrigin).handlePacket(raspPacket);
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }

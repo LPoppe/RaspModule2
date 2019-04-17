@@ -11,11 +11,11 @@ import javafx.util.Pair;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import static framework.transport.ControlFlag.DATA;
-import static framework.transport.ControlFlag.SYN;
+import static framework.transport.ControlFlag.*;
 
 public class RaspSocket {
 
+    private final int maxPayloadSize;
     // The address this handler needs to handle communication with.
     private RaspAddress address;
     private final RaspSender raspSender;
@@ -47,6 +47,7 @@ public class RaspSocket {
         this.application = new ApplicationHandler(this);
 
         this.maxPacketSize = maxRaspPacketSize;
+        this.maxPayloadSize = maxRaspPacketSize - RaspHeader.getLength();
 
         this.receiveWindow = new ReceiveWindow(10);
         this.sendWindow = new SendWindow(10);
@@ -77,7 +78,7 @@ public class RaspSocket {
             }
 
             // longer than max?
-            int lenToRead = Math.min(buffer.remaining(), maxPacketSize);
+            int lenToRead = Math.min(buffer.remaining(), maxPayloadSize);
             byte[] packetArray = new byte[lenToRead];
             buffer.get(packetArray);
             DATA.sendWithFlag(this, packetArray);
@@ -127,18 +128,18 @@ public class RaspSocket {
      * Resets the offset of the sending window to resend packets that have not been acknowledged before timeout.
      */
     public void resend() {
-        sendWindow.resetOffset();
+
         send(this.sendWindow.getNext());
     }
 
     public void handlePacket(RaspPacket raspPacket) throws InterruptedException {
         // Reset the last time a packet was received to current time.
         setLastTimeReceived(System.currentTimeMillis());
-
         raspPacket.getHeader().getFlag().respondToFlag(this, raspPacket);
+
     }
 
-    protected synchronized void offer(NoAckRaspPacket packet) throws InterruptedException {
+    protected void offer(NoAckRaspPacket packet) throws InterruptedException {
         if (packet.getHeader().getSeqNr() != this.seqNr) {
             throw new RuntimeException("Wrong sequence number. I dun goofed.");
         }
@@ -160,18 +161,28 @@ public class RaspSocket {
      * Ignore the ack number if higher seq nr. has already arrived.
      * //TODO: Does not wrap around.
      */
-    public synchronized void moveWindows(RaspPacket packet) throws InterruptedException {
+    public void moveWindows(RaspPacket packet) throws InterruptedException {
+        System.out.println("!!!!!!!!!!!!!" + 15);
         // Handle received ack
         if (packet.getHeader().getFlag() != SYN) {
+            System.out.println("!!!!!!!!!!!!!" + 12);
             this.sendWindow.ackPacket(packet.getHeader().getAckNr());
         }
+
+        System.out.println("!!!!!!!!!!!!!" + 13);
+        receiveWindow.offer(packet);
+        System.out.println("After offering: " + packet.getHeader().getSeqNr());
+        System.out.println("My current ack: " + receiveWindow.getCurrentAck());
+
         // Determine value of current ack.
-        int packetSeqNr = packet.getHeader().getSeqNr();
-        if (packetSeqNr == receiveWindow.getCurrentAck()) {
-            this.ackNr = packetSeqNr;
-            System.out.println("packet seq nr is equal to :" + packetSeqNr + ". new acknr: " + receiveWindow.getCurrentAck());
+        int currentAck = receiveWindow.getCurrentAck();
+        if (currentAck == -1) {
+            // Never received anything if -1.
+            return;
+        } else {
+            this.ackNr = currentAck;
         }
-        sendWindow.offer(packet);
+
 
     }
 
@@ -193,10 +204,6 @@ public class RaspSocket {
 
     private void setLastTimeReceived(long lastTimeReceived) {
         this.lastTimeReceived = lastTimeReceived;
-    }
-
-    public int getMaxPacketSize() {
-        return maxPacketSize;
     }
 
     public SendWindow getSendWindow() {
@@ -222,7 +229,7 @@ public class RaspSocket {
 
     public void setIsConnected(boolean isConnected) throws InterruptedException {
         this.isConnected = isConnected;
-        this.application.createUploader();
+        application.start();
     }
 
     public boolean isConnected() {

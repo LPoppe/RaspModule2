@@ -51,7 +51,7 @@ public abstract class Window {
             setBySeqNr(seqNr, packet);
             this.offerNotifier.offer(lockToken);
         } else {
-            throw new IndexOutOfBoundsException("Invalid sequence number while adding to queue.");
+            //throw new IndexOutOfBoundsException("Invalid sequence number while adding to queue.");
         }
     }
 

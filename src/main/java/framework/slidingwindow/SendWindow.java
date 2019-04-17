@@ -39,7 +39,8 @@ public class SendWindow extends Window {
                 this.freeSpaceNotifier.offer(lockToken);
             }
         } else {
-            throw new IndexOutOfBoundsException("Invalid sequence number ACKed.");
+            System.out.println("Invalid sequence number ACKed: " + seqNr);
+            //throw new IndexOutOfBoundsException("Invalid sequence number ACKed: " + seqNr);
         }
     }
 
@@ -47,7 +48,7 @@ public class SendWindow extends Window {
         NoAckRaspPacket packet = getByIndex(0);
         setByIndex(0, null);
         lowestSeq++;
-        offset = offset + 1 % 5;
+        offset = (offset + 1) % window.length;
         return packet;
     }
 

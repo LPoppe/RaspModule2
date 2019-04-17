@@ -8,12 +8,13 @@ import framework.transport.RaspSocket;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class ApplicationHandler {
+public class ApplicationHandler extends Thread {
 
     private final RaspSocket raspSocket;
     private final RaspUI raspUI;
     private HashMap<FileUpload, Integer> uploaders = new HashMap<>();
     private HashMap<FileDownload, Integer> downloaders = new HashMap<>();
+
     private boolean running = true;
 
     public ApplicationHandler(RaspSocket socket) {
@@ -25,14 +26,30 @@ public class ApplicationHandler {
         }
     }
 
-    private void testSending() throws InterruptedException, IOException {
-        createUploader();
+    public void run() {
+
+        try {
+            createUploader();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void createUploader() throws InterruptedException {
-        String filename = "src/main/resources/actualfatcat.jpg";
-        FileUpload upload = new FileUpload(this, filename);
-        sendToRaspSocket(upload.getNextFileSegment());;
+    public void stopMe() throws InterruptedException {
+        // Instruct own loop to stop.
+        this.running = false;
+        this.join();
+    }
+
+    private void createUploader() throws InterruptedException {
+        if (raspSocket.getRaspReceiver() instanceof RaspServer) {
+            System.out.println("???");
+            String filename = "src/main/resources/actualfatcat.jpg";
+            FileUpload upload = new FileUpload(this, filename);
+            sendToRaspSocket(upload.getNextFileSegment());
+//        raspSocket.close();
+        }
     }
 
     private void createDownloader() {

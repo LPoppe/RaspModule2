@@ -11,7 +11,7 @@ import java.util.HashMap;
 public abstract class RaspReceiver extends Thread {
     // DatagramSocket with timeout for receiving packets.
     DatagramSocket socket;
-    private static final int TIMEOUT = 200;
+    private static final int TIMEOUT = 500;
 
     // Thread responsible for sending created packets over shared socket.
     protected final RaspSender senderThread;
@@ -19,7 +19,8 @@ public abstract class RaspReceiver extends Thread {
     // Determine maximum packet size for NoAckRaspPacket.
     private static final int UDP_HEADER_LENGTH = 8;
     private static final int IP_HEADER_LENGTH = 20;
-    protected static final int MAX_RASP_PACKET_SIZE = 65535 - UDP_HEADER_LENGTH - IP_HEADER_LENGTH - RaspHeader.getLength();
+    protected static final int MAX_RASP_PACKET_SIZE = 50 - UDP_HEADER_LENGTH - IP_HEADER_LENGTH; //- RaspHeader.getLength();
+    protected static final int MAX_DATA_RECEIVED = 50;
 
     // The timeout of receiving upon which handlers should reset their sending window.
     protected static final int RESEND_TIMEOUT = 1000; // milliseconds
@@ -48,12 +49,14 @@ public abstract class RaspReceiver extends Thread {
         while (this.running) {
 
             // Receive buffer set to the maximum size a packet may have.
-            byte[] receiveBuffer = new byte[MAX_RASP_PACKET_SIZE];
+            byte[] receiveBuffer = new byte[MAX_DATA_RECEIVED];
             DatagramPacket request = new DatagramPacket(receiveBuffer, receiveBuffer.length);
 
             try {
+                System.out.println("!!!!!" + 1);
                 socket.receive(request);
             } catch (SocketTimeoutException e) {
+                System.out.println("!!!!!" + 2);
                 checkForTimeOuts();
                 continue;
             } catch (IOException e) {
@@ -61,20 +64,23 @@ public abstract class RaspReceiver extends Thread {
                 e.printStackTrace();
             }
 
+            System.out.println("!!!!!" + 3);
             RaspAddress packetOrigin = new RaspAddress(request.getAddress(), request.getPort());
 
             // Deserialize. Only creates packet if checksum succeeds.
             try {
+                System.out.println("!!!!!" + 4);
                 RaspPacket raspPacket = RaspPacket.deserialize(request);
-                try {
-                    relayToHandler(raspPacket, packetOrigin);
-                } catch (InterruptedException e) {
+                System.out.println("Received: " + raspPacket.getHeader().getSeqNr() + ", " + raspPacket.getHeader().getAckNr());
+                relayToHandler(raspPacket, packetOrigin);
+                System.out.println("!!!!!" + 6);
+            } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
             } catch (InvalidChecksumException ignored) {
             }
 
             // Check if any handlers need to resend packets.
+            System.out.println("!!!!!" + 5);
             checkForTimeOuts();
         }
     }

@@ -19,6 +19,7 @@ public enum ControlFlag {
     }, ACK(1) {
         @Override
         public void respondToFlag(RaspSocket raspSocket, RaspPacket packet) throws InterruptedException {
+            System.out.println("respondToFlag ACK");
             raspSocket.moveWindows(packet);
         }
 
@@ -44,9 +45,6 @@ public enum ControlFlag {
         @Override
         public void respondToFlag(RaspSocket raspSocket, RaspPacket packet) throws InterruptedException {
             raspSocket.moveWindows(packet);
-            if (!raspSocket.getSendWindow().hasNext()) {
-                ACK.sendWithFlag(raspSocket, new byte[0]);
-            }
         }
 
         @Override

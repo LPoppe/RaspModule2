@@ -38,9 +38,8 @@ public class RaspPacket extends NoAckRaspPacket {
         if (Arrays.equals(expectedChecksum, header.getChecksum())) {
             return raspPacket;
         } else {
-            System.out.println(header.flag + " received: " + Arrays.toString(header.getChecksum()) + " expected: " + Arrays.toString(expectedChecksum));
-            System.out.println(Arrays.toString(payload));
-            System.out.println(Arrays.toString(raspPacket.getPayload()));
+            System.out.println(header.flag + " received: " + Arrays.toString(header.getChecksum())
+                    + " expected: " + Arrays.toString(expectedChecksum));
             throw new InvalidChecksumException();
         }
     }

@@ -26,13 +26,17 @@ public class RaspServer extends RaspReceiver {
         if (raspPacket != null) {
             if (knownConnections.containsKey(packetOrigin)) {
                 // Call responsible RaspSocket.
+                System.out.println("!!!!!!!" + 7);
+                System.out.println(raspPacket.getHeader().getFlag());
                 knownConnections.get(packetOrigin).handlePacket(raspPacket);
-
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.SYN) {
+                System.out.println("!!!!!!!" + 8);
                 // Add client to known clients. Ignore unknown clients that do not send the proper control flag.
                 addConnection(packetOrigin.getAddress(), packetOrigin.getPort()).handlePacket(raspPacket);
+                System.out.println("!!!!!!!" + 9);
                 this.knownConnections.get(packetOrigin).setIsConnected(true);
-
+                System.out.println(this.knownConnections.get(packetOrigin).isConnected());
+                System.out.println("!!!!!!!" + 10);
             } else if (raspPacket.getHeader().getFlag() == ControlFlag.FIN) {
                 // If the client finishes the connection, it is removed from the known addresses.
                 removeClient(packetOrigin);

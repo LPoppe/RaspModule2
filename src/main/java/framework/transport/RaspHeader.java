@@ -59,7 +59,6 @@ public class RaspHeader extends NoAckRaspHeader{
      * @return the checksum value (a long).
      */
     byte[] createChecksum(byte[] payload) {
-        System.out.println("In checksum: " + Arrays.toString(payload));
         CRC32 checksum = new CRC32();
         checksum.update(this.seqNr);
         checksum.update(this.ackNr);
